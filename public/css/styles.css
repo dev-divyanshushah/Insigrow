@@ -1352,13 +1352,12 @@ button:hover svg {
   margin-bottom: 12px;
 }
 .auth-logo-img {
-  height: 36px;
+  height: 42px;
   width: auto;
-  border-radius: var(--radius-xs);
   object-fit: contain;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
-  border: 1px solid var(--border-subtle);
-  background: #FFFFFF;
+  box-shadow: none;
+  border: none;
+  background: transparent;
 }
 .auth-title {
   font-size: 1.25rem;
@@ -1482,11 +1481,11 @@ button:hover svg {
   color: var(--text-light);
 }
 .auth-powered-logo {
-  height: 20px;
+  height: 24px;
   width: auto;
-  border-radius: var(--radius-xs);
+  border-radius: 6px;
   object-fit: contain;
-  background: #FFFFFF;
+  background: transparent;
 }
 
 /* Alert Banners */
@@ -1690,10 +1689,10 @@ button:hover svg {
 
 .footer-inline-ei8-img,
 .footer-inline-logo {
-  height: 22px;
+  height: 24px;
   width: auto;
-  border-radius: 4px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
   vertical-align: middle;
   display: inline-block;
 }
