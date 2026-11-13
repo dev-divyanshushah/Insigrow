@@ -59,6 +59,20 @@ const AuthView = {
             </div>
 
             <div class="form-group">
+              <label class="form-label" for="reg-industry">Industry Solution <span class="req">*</span></label>
+              <div class="input-wrapper">
+                <span class="input-icon">${window.getIcon('layers')}</span>
+                <select id="reg-industry" class="input-field" required>
+                  <option value="fmcg" ${requestedIndustry === 'fmcg' || !requestedIndustry ? 'selected' : ''}>FMCG – Consumer Goods</option>
+                  <option value="manufacturing" ${requestedIndustry === 'manufacturing' ? 'selected' : ''}>Manufacturing – Production & Operations</option>
+                  <option value="b2b" ${requestedIndustry === 'b2b' ? 'selected' : ''}>B2B Enterprise – Business Solutions</option>
+                  <option value="ca" ${requestedIndustry === 'ca' || requestedIndustry === 'finance' ? 'selected' : ''}>Finance – CA & Advisory</option>
+                </select>
+              </div>
+              <div class="form-error-text" id="err-industry"></div>
+            </div>
+
+            <div class="form-group">
               <label class="form-label" for="reg-email">Business Email <span class="req">*</span></label>
               <div class="input-wrapper">
                 <span class="input-icon">${window.getIcon('mail')}</span>
@@ -131,6 +145,7 @@ const AuthView = {
   async handleRegisterSubmit() {
     const fullNameEl = document.getElementById('reg-fullname');
     const companyEl = document.getElementById('reg-company');
+    const industryEl = document.getElementById('reg-industry');
     const emailEl = document.getElementById('reg-email');
     const phoneEl = document.getElementById('reg-phone');
     const passEl = document.getElementById('reg-password');
@@ -145,6 +160,7 @@ const AuthView = {
 
     const fullName = fullNameEl.value.trim();
     const companyName = companyEl.value.trim();
+    const selectedIndustry = industryEl ? industryEl.value : (this.requestedIndustry || 'fmcg');
     const email = emailEl.value.trim();
     const phoneNumber = phoneEl.value.trim();
     const password = passEl.value;
@@ -213,27 +229,32 @@ const AuthView = {
     btnSubmit.innerHTML = `<span class="spinner"></span> <span>Registering Account...</span>`;
 
     try {
-      await window.api.register({
+      const regRes = await window.api.register({
         fullName,
         companyName,
         email,
         phoneNumber,
         password,
-        confirmPassword
+        confirmPassword,
+        industry: selectedIndustry
       });
 
       // Sign in immediately and activate the selected solution trial.
       const session = await window.api.login({ email, password, rememberMe: true });
       window.appState.setUser(session.user);
       window.appState.setTrials(session.trials);
-      if (this.requestedIndustry) {
-        const trial = await window.api.activateTrial(this.requestedIndustry);
+      
+      const targetIndustry = selectedIndustry || this.requestedIndustry || 'fmcg';
+      if (!session.trials || !session.trials[targetIndustry] || !session.trials[targetIndustry].isTrialActive) {
+        const trial = await window.api.activateTrial(targetIndustry);
         window.appState.setTrials(trial.trials);
       }
-      alertBox.innerHTML = `<div class="alert-banner success">${window.getIcon('checkCircle', 'icon')} <div><strong>Your workspace is ready.</strong><p>${this.requestedIndustry ? 'Your 15-day trial is active. Opening your solution…' : 'Opening your Insigrow workspace…'}</p></div></div>`;
-      window.appState.showToast(this.requestedIndustry ? 'Your 15-day trial is ready!' : 'Account created. Welcome to Insigrow!', 'success');
+      
+      const emailNotice = regRes.emailConfirmation && regRes.emailConfirmation.sent ? ' Confirmation email dispatched.' : '';
+      alertBox.innerHTML = `<div class="alert-banner success">${window.getIcon('checkCircle', 'icon')} <div><strong>Your workspace is ready.</strong><p>Your 15-day trial is active.${emailNotice} Opening your solution…</p></div></div>`;
+      window.appState.showToast('Your 15-day trial is ready! Welcome to Insigrow.', 'success');
       setTimeout(() => {
-        window.location.hash = this.requestedIndustry ? `#/industry/${this.requestedIndustry}` : '#/dashboard';
+        window.location.hash = targetIndustry ? `#/industry/${targetIndustry}` : '#/dashboard';
       }, 450);
 
     } catch (err) {

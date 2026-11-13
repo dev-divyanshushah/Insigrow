@@ -73,7 +73,7 @@ class Database {
     return users.find(u => u.id === id) || null;
   }
 
-  createUser({ fullName, companyName, email, phoneNumber, password }) {
+  createUser({ fullName, companyName, email, phoneNumber, password, industry }) {
     const users = this.getUsers();
     const normalizedEmail = email.trim().toLowerCase();
 
@@ -90,6 +90,7 @@ class Database {
       companyName: companyName.trim(),
       email: normalizedEmail,
       phoneNumber: phoneNumber.trim(),
+      industry: industry || 'fmcg',
       passwordHash,
       createdAt: new Date().toISOString()
     };

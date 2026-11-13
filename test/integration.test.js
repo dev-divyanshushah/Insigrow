@@ -198,6 +198,8 @@ async function runIntegrationTests() {
       'public/js/api.js',
       'public/js/state.js',
       'public/js/views/authView.js',
+      'public/js/views/landingView.js',
+      'public/js/views/industryLandingView.js',
       'public/js/views/dashboardView.js',
       'public/js/views/industryView.js',
       'public/js/views/trialModal.js',
@@ -210,7 +212,7 @@ async function runIntegrationTests() {
       const content = fs.readFileSync(fullPath, 'utf8');
       assert.ok(content.length > 50, `File suspiciously empty: ${f}`);
     }
-    console.log('✓ All 10 frontend assets present, verified, and complete');
+    console.log('✓ All 11 frontend assets present, verified, and complete');
 
     // 13. UI Updates Verification (Logo, Teal Palette, 16:9 Video Placeholders)
     console.log('[Test 13] Verify UI branding updates (insigrow-logo, teal palette, 16:9 video)...');
@@ -229,8 +231,30 @@ async function runIntegrationTests() {
     assert.ok(indViewContent.includes('Product Overview'), 'IndustryView must have Product Overview title');
     console.log('✓ UI branding, teal theme, and 16:9 video placeholders verified');
 
+    // 14. Four Dedicated Industry Landing Pages & Email Service Verification
+    console.log('[Test 14] Verify dedicated industry landing pages and email service...');
+    const indLandingPath = path.join(__dirname, '..', 'public', 'js', 'views', 'industryLandingView.js');
+    assert.ok(fs.existsSync(indLandingPath), 'industryLandingView.js must exist');
+    const indLandingContent = fs.readFileSync(indLandingPath, 'utf8');
+    assert.ok(indLandingContent.includes('fmcg:'), 'FMCG landing configuration must exist');
+    assert.ok(indLandingContent.includes('manufacturing:'), 'Manufacturing landing configuration must exist');
+    assert.ok(indLandingContent.includes('b2b:'), 'B2B landing configuration must exist');
+    assert.ok(indLandingContent.includes('ca:'), 'Finance (CA) landing configuration must exist');
+    assert.ok(indLandingContent.includes('challenges-section'), 'Industry challenges section must exist');
+    assert.ok(indLandingContent.includes('solutions-section'), 'Insigrow solutions section must exist');
+    assert.ok(indLandingContent.includes('mockup-content'), 'Dashboard/product preview section must exist');
+    assert.ok(indLandingContent.includes('industry-benefits-section'), 'Benefits section must exist');
+    assert.ok(indLandingContent.includes('industry-reg-section'), 'Dedicated registration section must exist');
+
+    const emailServicePath = path.join(__dirname, '..', 'server', 'services', 'emailService.js');
+    assert.ok(fs.existsSync(emailServicePath), 'emailService.js must exist');
+    const emailService = require('../server/services/emailService');
+    assert.strictEqual(typeof emailService.sendRegistrationEmail, 'function');
+    assert.ok(fs.existsSync(path.join(__dirname, '..', '.env.example')), '.env.example must exist');
+    console.log('✓ All 4 dedicated industry landing pages, 6-section structure, and email service verified');
+
     console.log('====================================================');
-    console.log('✨ ALL 13 INTEGRATION TESTS PASSED WITH 100% SUCCESS ✨');
+    console.log('✨ ALL 14 INTEGRATION TESTS PASSED WITH 100% SUCCESS ✨');
     console.log('====================================================');
   } catch (err) {
     console.error('❌ Integration test failed:', err);

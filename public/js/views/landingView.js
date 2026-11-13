@@ -14,13 +14,13 @@ const LandingView = {
         <p class="landing-eyebrow">${p.eyebrow}</p><h3>${p.name}</h3><p class="landing-card-description">${p.description}</p>
         <div class="landing-includes"><span>INCLUDED IN YOUR WORKSPACE</span><ul>${p.points.map(x => `<li>${window.getIcon('check', 'icon-xs')} ${x}</li>`).join('')}</ul></div>
         <div class="landing-includes premium"><span>UNLOCK DURING YOUR 15-DAY TRIAL</span><ul>${p.premium.map(x => `<li>${window.getIcon('sparkles', 'icon-xs')} ${x}</li>`).join('')}</ul></div>
-        <a class="landing-card-cta" href="#/register?industry=${p.id}">Explore ${p.name}<span>→</span></a>
+        <a class="landing-card-cta" href="#/solution/${p.id}">Explore ${p.name}<span>→</span></a>
       </article>`).join('');
 
     container.innerHTML = `
       <div class="landing-page">
         <header class="landing-header"><a class="landing-brand" href="#/landing"><img src="/insigrow-mark.png" alt="Insigrow"><span>INSIGROW</span></a>
-          <nav class="landing-nav" aria-label="Solutions">${this.products.map(p => `<a href="#/landing" data-scroll-target="solution-${p.id}">${p.name}</a>`).join('')}</nav>
+          <nav class="landing-nav" aria-label="Solutions">${this.products.map(p => `<a href="#/solution/${p.id}">${p.name}</a>`).join('')}</nav>
           <div class="landing-header-actions"><a class="landing-login" href="#/login">Sign in</a><a class="landing-header-cta" href="#/register">Get started <span>↗</span></a></div>
         </header>
         <main>
@@ -40,13 +40,12 @@ const LandingView = {
               <div class="landing-art-grid"></div>
             </div>
           </section>
-          <section class="landing-trust"><span>FOUR FOCUSED SOLUTIONS</span><div>${this.products.map(p=>`<a href="#/landing" data-scroll-target="solution-${p.id}">${window.getIcon(p.icon,'icon-xs')} ${p.name}</a>`).join('')}</div><span class="landing-trust-end">ONE INSIGROW WORKSPACE <b>✳</b></span></section>
           <section class="landing-solutions" id="solutions"><div class="landing-section-heading"><div><div class="landing-kicker"><span></span> MADE FOR THE WAY YOU WORK</div><h2>Choose your industry.<br><em>See what changes.</em></h2></div><p>Each solution brings everyday operations together and gives you advanced tools to go further during your free trial.</p></div>
             <div class="landing-products-grid">${productCards}</div>
           </section>
           <section class="landing-trial-band"><div><span class="landing-kicker"><span></span> YOUR NEXT 15 DAYS START HERE</span><h2>See your work in a<br>whole new light.</h2><p>Create your account and your selected solution will be ready to explore for 15 days.</p></div><a href="#/register" class="landing-primary-cta">Start your free trial <span>↗</span></a><div class="landing-band-mark">INSIGROW<br><span>CLARITY, BUILT AROUND YOU.</span></div></section>
         </main>
-        <footer class="landing-footer"><a class="landing-brand" href="#/landing"><img src="/insigrow-mark.png" alt=""><span>INSIGROW</span></a><span>Enterprise solutions, shaped around your business.</span><span>© 2026 Ei8 Technologies</span></footer>
+        <footer class="landing-footer"><a class="landing-brand" href="#/landing"><img src="/insigrow-mark.png" alt=""><span>INSIGROW</span></a><span>Enterprise solutions, shaped around your business.</span><div class="footer-powered-wrap"><span>Powered by</span><img src="/ei8-logo.png" alt="Ei8" class="footer-inline-ei8-img" /></div></footer>
       </div>`;
 
     container.querySelectorAll('[data-scroll-target]').forEach(link => link.addEventListener('click', event => {

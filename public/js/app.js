@@ -338,14 +338,30 @@
       return;
     }
 
+    // Dedicated Industry-Specific Landing Pages (Public)
+    if (path.startsWith('solution/') || path.startsWith('solutions/') || (path.startsWith('landing/') && path !== 'landing')) {
+      let indKey = (path.split('/')[1] || 'fmcg').toLowerCase().trim();
+      if (indKey === 'finance') indKey = 'ca';
+      if (['fmcg', 'ca', 'manufacturing', 'b2b'].includes(indKey)) {
+        window.IndustryLandingView.render(root, indKey);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+    }
+
     // Unauthenticated routes: register, login
     if (path === 'register') {
       if (window.appState.user) {
         window.location.hash = '#/dashboard';
         return;
       }
-      const requestedIndustry = params.get('industry') || '';
-      window.AuthView.renderRegister(root, params.get('email') || '', ['fmcg', 'ca', 'manufacturing', 'b2b'].includes(requestedIndustry) ? requestedIndustry : '');
+      let requestedIndustry = (params.get('industry') || '').toLowerCase().trim();
+      if (requestedIndustry === 'finance') requestedIndustry = 'ca';
+      window.AuthView.renderRegister(
+        root,
+        params.get('email') || '',
+        ['fmcg', 'ca', 'manufacturing', 'b2b'].includes(requestedIndustry) ? requestedIndustry : ''
+      );
       return;
     }
 

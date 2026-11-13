@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { db } = require('../db');
+const { db, SUPPORTED_INDUSTRIES } = require('../db');
 const { generateToken, requireAuth } = require('../auth');
+const { sendRegistrationEmail } = require('../services/emailService');
 
 // Email regex validation
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -12,9 +13,9 @@ const PHONE_REGEX = /^[+]?[(]?[0-9]{1,4}[)]?[-\s./0-9]{7,15}$/;
  * POST /api/auth/register
  * Registers a new user persistently in the backend
  */
-router.post('/register', (req, res) => {
+router.post('/register', async (req, res) => {
   try {
-    const { fullName, companyName, email, phoneNumber, password, confirmPassword } = req.body;
+    const { fullName, companyName, email, phoneNumber, password, confirmPassword, industry } = req.body;
 
     // Field presence validation
     if (!fullName || !fullName.trim()) {
@@ -45,6 +46,13 @@ router.post('/register', (req, res) => {
       return res.status(400).json({ success: false, message: 'Passwords do not match. Please re-enter.' });
     }
 
+    // Normalize and validate industry selection
+    let normalizedIndustry = (industry || 'fmcg').toLowerCase().trim();
+    if (normalizedIndustry === 'finance') normalizedIndustry = 'ca';
+    if (!SUPPORTED_INDUSTRIES.includes(normalizedIndustry)) {
+      normalizedIndustry = 'fmcg';
+    }
+
     // Check duplicate
     const existing = db.findUserByEmail(email);
     if (existing) {
@@ -60,18 +68,42 @@ router.post('/register', (req, res) => {
       companyName,
       email,
       phoneNumber,
-      password
+      password,
+      industry: normalizedIndustry
     });
+
+    // Automatically activate 15-day free trial for their chosen industry
+    try {
+      db.activateTrial(user.id, normalizedIndustry);
+    } catch (trialErr) {
+      console.warn('Auto trial activation notice:', trialErr.message);
+    }
+
+    // Dispatch branded confirmation email (fails gracefully without interrupting registration)
+    let emailStatus = { sent: false };
+    try {
+      const emailResult = await sendRegistrationEmail({
+        to: user.email,
+        fullName: user.fullName,
+        companyName: user.companyName,
+        industry: normalizedIndustry
+      });
+      emailStatus = { sent: emailResult.success, messageId: emailResult.messageId || null, previewUrl: emailResult.previewUrl || null };
+    } catch (emailErr) {
+      console.error('Registration email delivery error (non-fatal):', emailErr);
+    }
 
     return res.status(201).json({
       success: true,
-      message: 'Registration successful! You can now log in with your credentials.',
+      message: 'Registration successful! Your 15-day free trial has been activated.',
       user: {
         id: user.id,
         fullName: user.fullName,
         companyName: user.companyName,
-        email: user.email
-      }
+        email: user.email,
+        industry: user.industry
+      },
+      emailConfirmation: emailStatus
     });
   } catch (err) {
     console.error('Registration error:', err);

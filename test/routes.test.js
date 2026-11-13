@@ -26,12 +26,16 @@ function createReqRes(method, path, body = {}, user = null, cookies = {}) {
     headers: {},
     cookies: {},
     body: null,
+    _resolve: null,
     status(code) {
       this.statusCode = code;
       return this;
     },
     json(data) {
       this.body = data;
+      if (typeof this._resolve === 'function') {
+        this._resolve(this);
+      }
       return this;
     },
     cookie(name, val, opts) {
@@ -50,14 +54,12 @@ function createReqRes(method, path, body = {}, user = null, cookies = {}) {
 // Simple router runner helper
 function runRoute(router, req, res) {
   return new Promise((resolve, reject) => {
+    if (res.body !== null) return resolve(res);
+    res._resolve = resolve;
     router(req, res, (err) => {
       if (err) return reject(err);
       resolve(res);
     });
-    // If res.json was called synchronously
-    if (res.body !== null) {
-      resolve(res);
-    }
   });
 }
 
@@ -146,6 +148,27 @@ async function testRoutes() {
   assert.strictEqual(caTrialFeats[0].isLocked, true);
   assert.strictEqual(caTrialFeats[0].premiumData, null);
   console.log('✓ Locked industry features verified');
+
+  // Test 8: Register with explicit industry (B2B) and auto-activate trial
+  console.log('[Route Test 8] POST /api/auth/register with industry: b2b...');
+  const b2bEmail = `test_b2b_${Date.now()}@enterprisegrowth.com`;
+  const { req: r8, res: s8 } = createReqRes('POST', '/register', {
+    fullName: 'Rajesh Kedia',
+    companyName: 'Kedia Global Solutions',
+    email: b2bEmail,
+    phoneNumber: '+91 98111 22334',
+    password: 'PasswordB2B999',
+    confirmPassword: 'PasswordB2B999',
+    industry: 'b2b'
+  });
+  await runRoute(authRoutes, r8, s8);
+  assert.strictEqual(s8.statusCode, 201);
+  assert.strictEqual(s8.body.success, true);
+  assert.strictEqual(s8.body.user.industry, 'b2b');
+  assert.ok(s8.body.emailConfirmation);
+  const b2bTrials = db.getUserTrials(s8.body.user.id);
+  assert.strictEqual(b2bTrials.b2b.isTrialActive, true);
+  console.log('✓ Industry pre-selection, persistence, and trial auto-activation verified');
 
   console.log('\n🎉 ALL ROUTE TESTS PASSED WITH 100% ACCURACY! 🎉\n');
 }
