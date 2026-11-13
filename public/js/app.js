@@ -321,12 +321,22 @@
   }
 
   async function handleRoute() {
-    const hash = window.location.hash || '#/dashboard';
+    const hash = window.location.hash || (window.appState.user ? '#/dashboard' : '#/landing');
     const [pathPart, queryPart] = hash.split('?');
     const params = new URLSearchParams(queryPart || '');
 
     // Parse path
     const path = pathPart.replace(/^#\/?/, '');
+
+    // Public product landing page
+    if (path === '' || path === 'landing') {
+      if (window.appState.user) {
+        window.location.hash = '#/dashboard';
+        return;
+      }
+      window.LandingView.render(root);
+      return;
+    }
 
     // Unauthenticated routes: register, login
     if (path === 'register') {
@@ -334,7 +344,8 @@
         window.location.hash = '#/dashboard';
         return;
       }
-      window.AuthView.renderRegister(root, params.get('email') || '');
+      const requestedIndustry = params.get('industry') || '';
+      window.AuthView.renderRegister(root, params.get('email') || '', ['fmcg', 'ca', 'manufacturing', 'b2b'].includes(requestedIndustry) ? requestedIndustry : '');
       return;
     }
 

@@ -9,42 +9,43 @@
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
   /* Primary Dark Navy (Headings, Primary Text & Actions) */
-  --color-navy: #0F172A;
-  --color-navy-dark: #020617;
-  --color-navy-muted: #1E293B;
-  --color-primary-teal: #0F2942; /* Dark Corporate Navy for primary buttons and brand elements */
-  --color-primary: #0F2942;
-  --color-primary-hover: #1E3A5F;
-  --color-primary-dark: #0A1E30;
-  --color-primary-light: #F0F4F8;
-  --color-primary-border: #D1DEEC;
+  --color-navy: #173846;
+  --color-navy-dark: #102B37;
+  --color-navy-muted: #285364;
+  --color-primary-teal: #116D7B;
+  --color-primary: #116D7B;
+  --color-primary-hover: #0D5968;
+  --color-primary-dark: #0A4654;
+  --color-primary-light: #E9F7F8;
+  --color-primary-border: #B9E2E6;
 
   /* Accent Blue (Subtle highlights & links) */
-  --color-blue: #0284C7;
-  --color-blue-light: #F0F9FF;
-  --color-blue-border: #BAE6FD;
+  --color-blue: #00A7D3;
+  --color-blue-light: #E8F8FC;
+  --color-blue-border: #A8E2EF;
 
   /* Success & Trial Green / Mint */
-  --color-emerald: #059669;
-  --color-emerald-dark: #047857;
-  --color-emerald-light: #F0FDF4;
-  --color-emerald-border: #BBF7D0;
-  --color-mint: #10B981;
-  --color-mint-light: #ECFDF5;
-  --color-mint-border: #A7F3D0;
+  --color-emerald: #528F4D;
+  --color-emerald-dark: #3F753B;
+  --color-emerald-light: #F0F8EE;
+  --color-emerald-border: #C8E3C2;
+  --color-mint: #63AD86;
+  --color-mint-light: #EBF7F0;
+  --color-mint-border: #BCE0CA;
+  --color-magenta: #C865BD;
 
   /* Neutrals & Surfaces (Predominantly White & Clean Slate) */
   --color-white: #FFFFFF;
-  --bg-app: #F8FAFC;         /* Clean off-white canvas */
+  --bg-app: #F5F9FA;
   --bg-surface: #FFFFFF;     /* Pure White card surface */
-  --bg-subtle: #F1F5F9;      /* Slate 100 subtle background */
-  --bg-tinted-blue: #F0F4F8; /* Subtle blue tint */
-  --bg-tinted-green: #F6FBF8;/* Subtle green tint */
+  --bg-subtle: #EDF4F5;
+  --bg-tinted-blue: #EAF6F8;
+  --bg-tinted-green: #F1F7EF;
 
   /* Borders - Subtle and crisp */
-  --border-subtle: #E2E8F0;  /* Slate 200 */
-  --border-strong: #CBD5E1;  /* Slate 300 */
-  --border-focus: #0F2942;
+  --border-subtle: #DDE9EB;
+  --border-strong: #C5D7DA;
+  --border-focus: #00A7D3;
 
   /* High Legibility Dark Navy Typography */
   --text-main: #0F172A;      /* Slate 900: High-contrast Dark Navy */

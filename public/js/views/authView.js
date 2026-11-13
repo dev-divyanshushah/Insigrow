@@ -20,20 +20,21 @@ const AuthView = {
   /**
    * Render Registration Form
    */
-  renderRegister(container, prefilledEmail = '') {
+  renderRegister(container, prefilledEmail = '', requestedIndustry = '') {
+    this.requestedIndustry = requestedIndustry;
     container.innerHTML = `
       <div class="auth-page-wrapper">
         <div class="auth-card">
           <div class="auth-header">
             <div class="auth-brand-badge">
-              <img src="/insigrow-logo.png" alt="Insigrow Logo" class="auth-logo-img" onerror="this.style.display='none'" />
+              <img src="/insigrow-mark.png" alt="Insigrow Logo" class="auth-logo-img" onerror="this.style.display='none'" />
               <div class="brand-text" style="text-align: left;">
                 <span class="brand-name">Insigrow <span class="brand-badge">PORTAL</span></span>
                 <span class="brand-sub">Industry Solutions Portal</span>
               </div>
             </div>
             <h1 class="auth-title">Create Business Account</h1>
-            <p class="auth-subtitle">Register your organization to access Industry Solutions & 15-Day Free Trials</p>
+            <p class="auth-subtitle">${requestedIndustry ? `Create your account to start your ${requestedIndustry === 'ca' ? 'Finance' : requestedIndustry} 15-day trial.` : 'Register your organization to access Insigrow industry solutions.'}</p>
           </div>
 
           <div id="register-alert-container"></div>
@@ -110,7 +111,7 @@ const AuthView = {
 
           <div class="auth-powered-by">
             <span>Powered by</span>
-            <img src="/insigrow-logo.png" alt="Insigrow" class="auth-powered-logo" onerror="this.style.display='none'" />
+            <img src="/ei8-logo.png" alt="Ei8" class="auth-powered-logo" onerror="this.style.display='none'" />
           </div>
         </div>
       </div>
@@ -212,7 +213,7 @@ const AuthView = {
     btnSubmit.innerHTML = `<span class="spinner"></span> <span>Registering Account...</span>`;
 
     try {
-      const res = await window.api.register({
+      await window.api.register({
         fullName,
         companyName,
         email,
@@ -221,22 +222,19 @@ const AuthView = {
         confirmPassword
       });
 
-      // Success
-      alertBox.innerHTML = `
-        <div class="alert-banner success">
-          ${window.getIcon('checkCircle', 'icon')}
-          <div>
-            <strong>Registration Successful!</strong>
-            <p>Your business account has been created. Redirecting to Login...</p>
-          </div>
-        </div>
-      `;
-      window.appState.showToast('Account registered successfully! Please sign in.', 'success');
-
+      // Sign in immediately and activate the selected solution trial.
+      const session = await window.api.login({ email, password, rememberMe: true });
+      window.appState.setUser(session.user);
+      window.appState.setTrials(session.trials);
+      if (this.requestedIndustry) {
+        const trial = await window.api.activateTrial(this.requestedIndustry);
+        window.appState.setTrials(trial.trials);
+      }
+      alertBox.innerHTML = `<div class="alert-banner success">${window.getIcon('checkCircle', 'icon')} <div><strong>Your workspace is ready.</strong><p>${this.requestedIndustry ? 'Your 15-day trial is active. Opening your solution…' : 'Opening your Insigrow workspace…'}</p></div></div>`;
+      window.appState.showToast(this.requestedIndustry ? 'Your 15-day trial is ready!' : 'Account created. Welcome to Insigrow!', 'success');
       setTimeout(() => {
-        // Redirect to login with email pre-filled
-        window.location.hash = `#/login?email=${encodeURIComponent(email)}`;
-      }, 1200);
+        window.location.hash = this.requestedIndustry ? `#/industry/${this.requestedIndustry}` : '#/dashboard';
+      }, 450);
 
     } catch (err) {
       btnSubmit.disabled = false;
@@ -261,7 +259,7 @@ const AuthView = {
         <div class="auth-card">
           <div class="auth-header">
             <div class="auth-brand-badge">
-              <img src="/insigrow-logo.png" alt="Insigrow Logo" class="auth-logo-img" onerror="this.style.display='none'" />
+              <img src="/insigrow-mark.png" alt="Insigrow Logo" class="auth-logo-img" onerror="this.style.display='none'" />
               <div class="brand-text" style="text-align: left;">
                 <span class="brand-name">Insigrow <span class="brand-badge">PORTAL</span></span>
                 <span class="brand-sub">Industry Solutions Portal</span>
@@ -321,7 +319,7 @@ const AuthView = {
 
           <div class="auth-powered-by">
             <span>Powered by</span>
-            <img src="/insigrow-logo.png" alt="Insigrow" class="auth-powered-logo" onerror="this.style.display='none'" />
+            <img src="/ei8-logo.png" alt="Ei8" class="auth-powered-logo" onerror="this.style.display='none'" />
           </div>
         </div>
       </div>

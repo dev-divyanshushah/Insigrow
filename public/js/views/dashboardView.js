@@ -85,10 +85,10 @@ const DashboardView = {
             <div class="cmd-brand-group">
               <a href="#/dashboard" class="cmd-brand-link" title="Insigrow Enterprise Solutions Platform">
                 <img 
-                  src="/insigrow-logo.png" 
+                  src="/insigrow-mark.png"
                   alt="Insigrow Logo" 
                   class="cmd-brand-logo" 
-                  onerror="this.onerror=null; this.src='/insigrow-logo.png.jpeg';"
+                  onerror="this.onerror=null; this.src='/insigrow-mark.png';"
                 />
                 <div class="cmd-brand-text">
                   <span class="cmd-brand-name">INSIGROW</span>
