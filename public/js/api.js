@@ -121,6 +121,50 @@ class ApiClient {
   async getIndustryData(industry) {
     return this.request(`/industry/${industry}`, { method: 'GET' });
   }
+
+  // SHIFTS SSO Launch Token
+  async getShiftsLaunchToken(role = 'MANAGER', targetRoute = null) {
+    return this.request('/industry/shifts/launch-token', {
+      method: 'POST',
+      body: JSON.stringify({ role, targetRoute })
+    });
+  }
+
+  // SHIFTS Team Invitations & Onboarding
+  async createInvitations(employees) {
+    return this.request('/shifts/invitations', {
+      method: 'POST',
+      body: JSON.stringify({ employees })
+    });
+  }
+
+  async getInvitations() {
+    return this.request('/shifts/invitations', { method: 'GET' });
+  }
+
+  async verifyInvitation(token) {
+    return this.request(`/shifts/invitations/verify?token=${encodeURIComponent(token)}`, {
+      method: 'GET'
+    });
+  }
+
+  async acceptInvitation(payload) {
+    const res = await this.request('/shifts/invitations/accept', {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    });
+    if (res.token) {
+      this.setToken(res.token, true);
+    }
+    return res;
+  }
+
+  async completeOnboarding(config) {
+    return this.request('/shifts/onboarding/complete', {
+      method: 'POST',
+      body: JSON.stringify(config)
+    });
+  }
 }
 
 window.api = new ApiClient();

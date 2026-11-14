@@ -5,7 +5,8 @@
   "main": "server/server.js",
   "scripts": {
     "start": "node server/server.js",
-    "dev": "node server/server.js"
+    "dev": "node server/server.js",
+    "test": "node test/routes.test.js && node test/integration.test.js && node test/shifts_onboarding_verification.test.js"
   },
   "keywords": [],
   "author": "",

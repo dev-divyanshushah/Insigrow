@@ -513,6 +513,178 @@ const IndustryLandingView = {
       ],
       regHeadline: 'Ready to modernize your financial practice or corporate advisory?',
       regSubtitle: 'Activate your 15-day complimentary trial with automated statutory calendars, client receivables tracking, and financial analytics.'
+    },
+    shifts: {
+      id: 'shifts',
+      name: 'SHIFTS – Workforce & Shift Management',
+      shortName: 'SHIFTS',
+      color: 'teal',
+      accentColor: '#087F8C',
+      kicker: 'WORKFORCE & SHIFT MANAGEMENT',
+      tagline: 'Every Shift. Every Team. Perfectly Aligned.',
+      heroHeadline: 'Your Workforce,<br><em>Working in Perfect Sync.</em>',
+      heroDescription: 'Take control of your workforce with intelligent shift scheduling, seamless employee coordination and powerful workforce insights. Everything your team needs to work better, in one place.',
+      ctaText: 'Start Your 15-Day Free Trial',
+      ctaSubtext: 'Explore SHIFTS free for 15 days. No credit card required.',
+      secondaryCtaText: 'Explore Features',
+      trialNotice: '15 Days Free. No Credit Card Required.',
+      stats: [
+        { label: 'Total Scheduled Hours', value: '2,840 hrs', change: '+8.4% WoW', trend: 'up' },
+        { label: 'Roster Fill Rate', value: '99.4%', change: 'Target > 98.0%', trend: 'up' },
+        { label: 'Active Specialists', value: '64 Staff', change: 'Across 4 Tiers', trend: 'neutral' },
+        { label: 'Scheduling Conflicts', value: '0 Active', change: 'All 14 Resolved', trend: 'up' }
+      ],
+      heroDashboard: {
+        title: 'Weekly Shift Operations & Telemetry',
+        badge: 'SHIFTS OPS',
+        kpis: [
+          { name: 'Shift Fill Rate', val: '99.4%', change: '+2.1%', trend: 'up', sub: 'Weekly Schedule Full' },
+          { name: 'Total Hours', val: '2,840 hrs', change: '+8.4%', trend: 'up', sub: '64 Specialists Roster' },
+          { name: 'Floor Coverage', val: '100%', change: 'Optimal', trend: 'up', sub: 'Zero Queue Starvation' },
+          { name: 'Active Conflicts', val: '0 Clashes', change: 'Clean', trend: 'neutral', sub: 'All Rules Satisfied' }
+        ],
+        chartTitle: 'Daily Staffing vs Inbound Contact Curve',
+        chartBadge: 'Erlang-C SLA: 99.2%',
+        chartBars: [
+          { label: 'Mon', pct: 86 },
+          { label: 'Tue', pct: 92 },
+          { label: 'Wed', pct: 100 },
+          { label: 'Thu', pct: 94 },
+          { label: 'Fri', pct: 88 },
+          { label: 'Sat', pct: 70 }
+        ],
+        feedTitle: 'Live Floor Shift Distribution',
+        feedItems: [
+          { name: 'Morning Shift (07:00 - 15:30)', meta: '24 Specialists · Tier 1 & 2', statusText: 'On Shift', statusClass: 'green' },
+          { name: 'Afternoon Shift (15:00 - 23:30)', meta: '28 Specialists · Peak Volume', statusText: 'Starting Soon', statusClass: 'green' },
+          { name: 'Night Shift (23:00 - 07:30)', meta: '12 Specialists · Escalations', statusText: 'Scheduled', statusClass: 'amber' }
+        ]
+      },
+      challenges: [
+        {
+          title: 'Manual Scheduling & Spreadsheet Chaos',
+          desc: 'Operations managers lose 10+ hours weekly juggling disjointed spreadsheets, paper rosters, and chat messages just to assemble a basic schedule.',
+          icon: 'calendar'
+        },
+        {
+          title: 'Employee Availability & Booking Conflicts',
+          desc: 'Accidental double-bookings, assigning staff during unrecorded time off, and violating statutory 11-hour rest periods leads to employee frustration.',
+          icon: 'alertTriangle'
+        },
+        {
+          title: 'Last-Minute Shift Changes & Absence Scrambles',
+          desc: 'Unplanned sick leaves and informal shift trades force supervisors into frantic calling marathons, leaving customer queues dangerously understaffed.',
+          icon: 'clock'
+        },
+        {
+          title: 'Uneven Workforce Distribution & Queue Starvation',
+          desc: 'Support hubs operate overstaffed during quiet mid-mornings while running on skeletal crews during late-afternoon customer volume surges.',
+          icon: 'layers'
+        },
+        {
+          title: 'Administrative Workload & Costly Payroll Errors',
+          desc: 'Manual overtime calculations, unmonitored break violations, and inaccurate time tracking result in unexpected payroll burn and compliance penalties.',
+          icon: 'fileText'
+        }
+      ],
+      solutions: [
+        {
+          title: 'Smart Shift Scheduling',
+          desc: 'Interactive weekly calendar with Morning, Afternoon, and Night shifts, visual drag-and-drop allocations, and instant one-click roster publishing.',
+          icon: 'calendar',
+          badge: 'Included in Core'
+        },
+        {
+          title: 'Employee Management & Seniority Tiers',
+          desc: 'Complete workforce registry tracking Lead, Senior, Mid, and Junior qualifications, specialized skill matrices, and weekly hour limits.',
+          icon: 'users',
+          badge: 'Included in Core'
+        },
+        {
+          title: 'Shift Templates & Staffing Rules',
+          desc: 'Standardized operational templates for recurring rotations with pre-configured start/end times, break allowances, and role requirements.',
+          icon: 'sliders',
+          badge: 'Included in Core'
+        },
+        {
+          title: 'Employee Availability Self-Service',
+          desc: 'Frontline staff submit recurring availability, preferred shift windows, and blackout periods through their personal self-service portal.',
+          icon: 'checkCircle',
+          badge: 'Included in Core'
+        },
+        {
+          title: 'Staggered Break Management',
+          desc: 'Intelligent break staggering algorithms maintaining continuous floor coverage while enforcing statutory labor rest compliance.',
+          icon: 'clock',
+          badge: 'Included in Core'
+        },
+        {
+          title: 'Constraint-Based Automated Roster Generation',
+          desc: 'Algorithmic constraint satisfaction solver generating fair, optimized 7-day rosters in seconds while respecting statutory limits and skill constraints.',
+          icon: 'sparkles',
+          badge: '15-Day Trial Feature'
+        },
+        {
+          title: 'Erlang-C Contact Demand Planning',
+          desc: 'Mathematical staffing curve modeling matching hourly headcount precisely to incoming contact volume to safeguard SLAs.',
+          icon: 'trendingUp',
+          badge: '15-Day Trial Feature'
+        },
+        {
+          title: 'Real-time Conflict Detection & Auto-Resolution',
+          desc: 'Active detection of shift overlaps, overtime >40 hrs, rest periods <11 hrs, and skill mismatches with single-click automated resolution.',
+          icon: 'shieldCheck',
+          badge: '15-Day Trial Feature'
+        },
+        {
+          title: 'Peer-to-Peer Shift Swapping',
+          desc: 'Peer-to-peer shift trade exchange allowing qualified employees to swap shifts with manager review, rule validation, and full audit trails.',
+          icon: 'layers',
+          badge: '15-Day Trial Feature'
+        },
+        {
+          title: 'Workforce Analytics & Labor Cost Forecasting',
+          desc: 'Executive reporting on total scheduled labor costs, overtime premium burn, department coverage ratios, and attendance punctuality.',
+          icon: 'barChart',
+          badge: '15-Day Trial Feature'
+        }
+      ],
+      workflow: [
+        {
+          step: '01',
+          title: 'Set Up Your Workforce',
+          desc: 'Import employees, assign departments, configure seniority tiers (Lead, Senior, Mid, Junior), and specify contractual max weekly hours and wage rates.'
+        },
+        {
+          step: '02',
+          title: 'Define Shifts and Availability',
+          desc: 'Establish Morning, Afternoon, and Night shift templates, configure break windows, and let employees submit their preferred availability directly.'
+        },
+        {
+          step: '03',
+          title: 'Generate and Manage Schedules',
+          desc: 'Deploy the constraint-based automated roster generator or craft customized weekly schedules with real-time conflict prevention and instant publishing.'
+        },
+        {
+          step: '04',
+          title: 'Monitor Workforce Performance',
+          desc: 'Track live shift attendance, manage peer shift trade requests, monitor Erlang-C service coverage, and review labor cost and overtime analytics.'
+        }
+      ],
+      previewMetrics: {
+        headline: 'Interactive Weekly Workforce Calendar & Live Roster',
+        sub: 'Live shift management preview across Morning, Afternoon, and Night operations'
+      },
+      benefits: [
+        { num: '75%', label: 'Reduced Manual Scheduling', desc: 'Constraint-based auto-scheduler generates complete weekly rosters in seconds, freeing managers from spreadsheet drudgery.' },
+        { num: '99.4%', label: 'Shift Coverage & SLA Protection', desc: 'Erlang-C demand matching ensures peak hours have the exact right headcount to prevent queue spikes.' },
+        { num: '84%', label: 'Fewer Scheduling Conflicts', desc: 'Real-time clash detection prevents double-bookings, rest period violations, and unrecorded absence overlaps.' },
+        { num: '12%', label: 'Labor Cost Savings via Overtime Control', desc: 'Proactive 40-hour weekly caps prevent accidental overtime pay accumulation across frontline staff.' },
+        { num: '2.4x', label: 'Higher Employee Satisfaction', desc: 'Transparent self-service schedules, easy peer shift trading, and reliable break staggering reduce frontline burnout.' },
+        { num: '100%', label: 'Audit-Ready Workforce Compliance', desc: 'Every shift assignment, swap approval, and schedule modification is recorded with full timestamped audit logs.' }
+      ],
+      regHeadline: 'Ready to bring your workforce into perfect alignment?',
+      regSubtitle: 'Activate your 15-day complimentary trial with automated roster generation, intelligent conflict detection, and direct access to ShiftPlanner.'
     }
   },
 
@@ -530,33 +702,42 @@ const IndustryLandingView = {
     const navItems = [
       { id: 'fmcg', name: 'FMCG' },
       { id: 'manufacturing', name: 'Manufacturing' },
-      { id: 'b2b', name: 'B2B Enterprise' },
-      { id: 'ca', name: 'Finance & CA' }
+      { id: 'b2b', name: 'B2B' },
+      { id: 'ca', name: 'Finance' },
+      { id: 'shifts', name: 'SHIFTS' }
     ];
+
+    // Dedicated high-fidelity custom experience for SHIFTS
+    if (key === 'shifts') {
+      this.renderShiftsLanding(container, ind, navItems);
+      return;
+    }
 
     container.innerHTML = `
       <div class="landing-page industry-landing-page ${ind.color}">
-        <!-- Top Navigation Bar -->
-        <header class="landing-header">
-          <a class="landing-brand" href="#/landing">
-            <img src="/insigrow-mark.png" alt="Insigrow Logo" />
-            <span>INSIGROW</span>
-          </a>
-          <nav class="landing-nav" aria-label="Industry Solutions">
-            <a href="#/landing" class="nav-home-link">← Overview</a>
-            ${navItems.map(item => `
-              <a href="#/solution/${item.id}" class="${item.id === ind.id ? 'active-nav-link' : ''}">
-                ${item.name}
-              </a>
-            `).join('')}
-          </nav>
-          <div class="landing-header-actions">
-            <a class="landing-login" href="#/login">Sign in</a>
-            <a class="landing-header-cta" href="#/register?industry=${ind.id}">
-              Start Free Trial <span>↗</span>
+        <!-- Top Navigation Bar (Phase 2 Universal Header) -->
+        ${window.HeaderView ? window.HeaderView.render({ activeNav: ind.id, mode: 'public', user: window.appState && window.appState.user }) : `
+          <header class="landing-header">
+            <a class="landing-brand" href="#/landing">
+              <img src="/insigrow-mark.png" alt="Insigrow Logo" />
+              <span>INSIGROW</span>
             </a>
-          </div>
-        </header>
+            <nav class="landing-nav" aria-label="Industry Solutions">
+              <a href="#/landing" class="nav-home-link">← Overview</a>
+              ${navItems.map(item => `
+                <a href="#/solution/${item.id}" class="${item.id === ind.id ? 'active-nav-link' : ''}">
+                  ${item.name}
+                </a>
+              `).join('')}
+            </nav>
+            <div class="landing-header-actions">
+              <a class="landing-login" href="#/login">Sign in</a>
+              <a class="landing-header-cta" href="#/register?industry=${ind.id}">
+                Start Free Trial <span>↗</span>
+              </a>
+            </div>
+          </header>
+        `}
 
         <main>
           <!-- ======================================================== -->
@@ -575,10 +756,13 @@ const IndustryLandingView = {
                 <p class="ind-hero-description">${ind.heroDescription}</p>
 
                 <div class="ind-hero-cta-group">
-                  <a href="#/register?industry=${ind.id}" class="ind-btn-primary">
-                    <span>${ind.ctaText}</span>
-                    <span class="ind-btn-arrow">→</span>
-                  </a>
+                  <div style="display: flex; flex-direction: column; gap: 6px;">
+                    <a href="${ind.id === 'shifts' ? '#/shifts/auth' : `#/register?industry=${ind.id}`}" class="ind-btn-primary" id="shifts-hero-primary-cta">
+                      <span>${ind.ctaText}</span>
+                      <span class="ind-btn-arrow">→</span>
+                    </a>
+                    ${ind.ctaSubtext ? `<span style="font-size: 12px; color: var(--text-muted); font-weight: 500;">${ind.ctaSubtext}</span>` : ''}
+                  </div>
                   <a href="#solutions-section" class="ind-btn-secondary" onclick="document.getElementById('solutions-section').scrollIntoView({behavior:'smooth'}); return false;">
                     <span>Explore Features</span>
                     <span class="ind-btn-arrow-down">↓</span>
@@ -807,8 +991,8 @@ const IndustryLandingView = {
                 <p class="reg-band-lead">${ind.regSubtitle}</p>
                 
                 <div class="reg-action-wrapper">
-                  <a href="#/register?industry=${ind.id}" class="reg-primary-btn">
-                    <span>Register Your Company</span>
+                  <a href="${ind.id === 'shifts' ? '#/shifts/auth' : `#/register?industry=${ind.id}`}" class="reg-primary-btn">
+                    <span>${ind.id === 'shifts' ? 'Start Your 15-Day Free Trial' : 'Register Your Company'}</span>
                     <span class="btn-arrow">→</span>
                   </a>
                   <div class="reg-trust-notes">
@@ -862,6 +1046,9 @@ const IndustryLandingView = {
     }
     if (typeof window.initInteractiveCards === 'function') {
       window.initInteractiveCards(container);
+    }
+    if (window.HeaderView && window.HeaderView.initEvents) {
+      window.HeaderView.initEvents(container);
     }
   },
 
@@ -1012,6 +1199,53 @@ const IndustryLandingView = {
       `;
     }
 
+    if (ind.id === 'shifts') {
+      return `
+        <div class="mockup-data-grid">
+          <div class="mockup-widget">
+            <div class="widget-head">
+              <h4>Live Shift Rotations & Specialist Allocations</h4>
+              <span class="widget-tag">SHIFT ROSTER</span>
+            </div>
+            <div class="shifts-widget-list">
+              <div class="depot-item">
+                <div><strong>Morning Shift (07:00 – 15:30)</strong><small>24 Specialists · Tier 1 & 2 Support</small></div>
+                <div style="text-align: right;"><span class="status-pill green">100% Floor SLA</span><small style="display: block; margin-top: 3px;">Req: 22 · Act: 24</small></div>
+              </div>
+              <div class="depot-item">
+                <div><strong>Afternoon Shift (15:00 – 23:30)</strong><small>28 Specialists · Peak Contact Volume</small></div>
+                <div style="text-align: right;"><span class="status-pill green">Balanced</span><small style="display: block; margin-top: 3px;">Req: 28 · Act: 28</small></div>
+              </div>
+              <div class="depot-item">
+                <div><strong>Night Shift (23:00 – 07:30)</strong><small>12 Specialists · Incident Escalations</small></div>
+                <div style="text-align: right;"><span class="status-pill amber">Optimal</span><small style="display: block; margin-top: 3px;">Req: 10 · Act: 12</small></div>
+              </div>
+            </div>
+          </div>
+          <div class="mockup-widget">
+            <div class="widget-head">
+              <h4>Break Staggering & Floor SLA Coverage</h4>
+              <span class="widget-tag">ERLANG-C</span>
+            </div>
+            <div class="depot-list">
+              <div class="depot-item">
+                <div><strong>Wave 1 (11:30 - 12:15)</strong><small>6 On Break · 18 Floor Active</small></div>
+                <div style="text-align: right;"><span class="status-badge green">75% Floor</span></div>
+              </div>
+              <div class="depot-item">
+                <div><strong>Wave 2 (12:15 - 13:00)</strong><small>8 On Break · 16 Floor Active</small></div>
+                <div style="text-align: right;"><span class="status-badge green">67% Floor</span></div>
+              </div>
+              <div class="depot-item">
+                <div><strong>Wave 3 (13:00 - 13:45)</strong><small>6 On Break · 18 Floor Active</small></div>
+                <div style="text-align: right;"><span class="status-badge green">75% Floor</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
     // Finance / CA
     return `
       <div class="mockup-data-grid">
@@ -1057,6 +1291,936 @@ const IndustryLandingView = {
         </div>
       </div>
     `;
+  },
+
+  /**
+   * Dedicated, comprehensive landing page for SHIFTS – Insigrow's Fifth Business Solution
+   */
+  renderShiftsLanding(container, ind, navItems) {
+    const dash = ind.heroDashboard;
+
+    container.innerHTML = `
+      <div class="landing-page industry-landing-page shifts-landing-theme">
+        <!-- Top Navigation Bar (Phase 2 Universal Header) -->
+        ${window.HeaderView ? window.HeaderView.render({ activeNav: 'shifts', mode: 'public', user: window.appState && window.appState.user }) : `
+          <header class="landing-header">
+            <a class="landing-brand" href="#/landing">
+              <img src="/insigrow-mark.png" alt="Insigrow Logo" />
+              <span>INSIGROW</span>
+            </a>
+            <nav class="landing-nav" aria-label="Industry Solutions">
+              <a href="#/landing" class="nav-home-link">← Overview</a>
+              ${navItems.map(item => `
+                <a href="#/solution/${item.id}" class="${item.id === ind.id ? 'active-nav-link' : ''}">
+                  ${item.name}
+                </a>
+              `).join('')}
+            </nav>
+            <div class="landing-header-actions">
+              <a class="landing-login" href="#/shifts/auth?tab=login">Sign in</a>
+              <a class="landing-header-cta" href="#/shifts/auth">
+                Start Free Trial <span>↗</span>
+              </a>
+            </div>
+          </header>
+        `}
+
+        <main>
+          <!-- ======================================================== -->
+          <!-- 1. HERO SECTION (SPLIT LAYOUT WITH REALISTIC DASHBOARD PREVIEW) -->
+          <!-- ======================================================== -->
+          <section class="ind-hero-section shifts-hero-section">
+            <div class="ind-hero-container">
+              <!-- LEFT COLUMN (~55%) -->
+              <div class="ind-hero-left">
+                <div class="ind-hero-badge">
+                  <span class="ind-badge-dot teal-dot"></span>
+                  <span class="ind-badge-text">15-DAY FREE TRIAL · SHIFTS SOLUTION</span>
+                </div>
+
+                <div class="shifts-hero-tagline">"Every Shift. Every Team. Perfectly Aligned."</div>
+                <h1 class="ind-hero-heading">Your Workforce,<br><em>Working in Perfect Sync.</em></h1>
+                <p class="ind-hero-description">
+                  Take control of your workforce with intelligent shift scheduling, seamless employee coordination and powerful workforce insights. Everything your team needs to work better, in one place.
+                </p>
+
+                <div class="ind-hero-cta-group">
+                  <a href="#/register?industry=shifts" class="ind-btn-primary shifts-primary-btn">
+                    <span>Get Started</span>
+                    <span class="ind-btn-arrow">→</span>
+                  </a>
+                  <a href="#shifts-features" class="ind-btn-secondary" id="btn-hero-explore-features">
+                    <span>Explore Features</span>
+                    <span class="ind-btn-arrow-down">↓</span>
+                  </a>
+                  <a href="http://localhost:3000" target="_blank" class="ind-btn-outline shifts-app-cta" title="Launch ShiftPlanner Application">
+                    <span>Open ShiftPlanner ↗</span>
+                  </a>
+                </div>
+
+                <div class="ind-hero-trust-row">
+                  <div class="ind-trust-item">
+                    <span class="ind-trust-check">✓</span>
+                    <span>15 Days Free · No Credit Card Required</span>
+                  </div>
+                  <div class="ind-trust-item">
+                    <span class="ind-trust-check">✓</span>
+                    <span>Immediate Workspace Access</span>
+                  </div>
+                  <div class="ind-trust-item">
+                    <span class="ind-trust-check">✓</span>
+                    <span>Direct Connection to ShiftPlanner Engine</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- RIGHT COLUMN (~45%): REALISTIC WORKFORCE MANAGEMENT DASHBOARD PREVIEW -->
+              <div class="ind-hero-right">
+                <div class="ind-dash-preview-card shifts-preview-card">
+                  <!-- Chrome Top Bar -->
+                  <div class="ind-dash-topbar">
+                    <div class="ind-dash-dots">
+                      <span class="dot red"></span>
+                      <span class="dot amber"></span>
+                      <span class="dot green"></span>
+                    </div>
+                    <div class="ind-dash-title">ShiftFlow WFM · Weekly Schedule Telemetry</div>
+                    <div class="ind-dash-live-badge teal">
+                      <span class="ind-live-indicator teal-pulse"></span>
+                      <span>LIVE TELEMETRY</span>
+                    </div>
+                  </div>
+
+                  <!-- 4 Core Operational KPI Metric Tiles -->
+                  <div class="ind-dash-kpis">
+                    <div class="ind-dash-kpi">
+                      <span class="ind-kpi-name">Roster Fill Rate</span>
+                      <div class="ind-kpi-val-row">
+                        <span class="ind-kpi-val">99.4%</span>
+                        <span class="ind-kpi-tag up">+2.1%</span>
+                      </div>
+                      <span class="ind-kpi-sub">Target > 98.0%</span>
+                    </div>
+
+                    <div class="ind-dash-kpi">
+                      <span class="ind-kpi-name">Total Hours</span>
+                      <div class="ind-kpi-val-row">
+                        <span class="ind-kpi-val">2,840h</span>
+                        <span class="ind-kpi-tag up">+8.4%</span>
+                      </div>
+                      <span class="ind-kpi-sub">64 Specialists Roster</span>
+                    </div>
+
+                    <div class="ind-dash-kpi">
+                      <span class="ind-kpi-name">Floor Coverage</span>
+                      <div class="ind-kpi-val-row">
+                        <span class="ind-kpi-val">100%</span>
+                        <span class="ind-kpi-tag up">Safe</span>
+                      </div>
+                      <span class="ind-kpi-sub">Zero Queue Starvation</span>
+                    </div>
+
+                    <div class="ind-dash-kpi">
+                      <span class="ind-kpi-name">Active Conflicts</span>
+                      <div class="ind-kpi-val-row">
+                        <span class="ind-kpi-val">0 Flags</span>
+                        <span class="ind-kpi-tag up">Resolved</span>
+                      </div>
+                      <span class="ind-kpi-sub">14 Clashes Cleared</span>
+                    </div>
+                  </div>
+
+                  <!-- Weekly Employee Shift Calendar Preview (Interactive & Realistic) -->
+                  <div class="shifts-hero-calendar-wrap">
+                    <div class="shifts-calendar-head">
+                      <div class="cal-title-wrap">
+                        <span class="cal-title">Week Roster · 10 Nov – 16 Nov 2026</span>
+                        <span class="cal-badge-published">● Published</span>
+                      </div>
+                      <div class="shifts-filter-pills" id="hero-shift-filter">
+                        <button class="filter-pill active" data-filter="all">All Shifts</button>
+                        <button class="filter-pill" data-filter="morning">Morning</button>
+                        <button class="filter-pill" data-filter="afternoon">Afternoon</button>
+                        <button class="filter-pill" data-filter="night">Night</button>
+                      </div>
+                    </div>
+
+                    <!-- Mini Calendar Table Grid -->
+                    <div class="shifts-mini-grid" id="hero-calendar-grid">
+                      <div class="grid-col-header">
+                        <span class="col-day">MON</span>
+                        <span class="col-day">TUE</span>
+                        <span class="col-day">WED</span>
+                        <span class="col-day">THU</span>
+                        <span class="col-day">FRI</span>
+                        <span class="col-day">SAT</span>
+                        <span class="col-day">SUN</span>
+                      </div>
+
+                      <!-- Morning Shift Row -->
+                      <div class="grid-shift-row morning-row" data-shift-type="morning">
+                        <div class="row-label">
+                          <span class="shift-badge morning">Morning (07:00 – 15:30)</span>
+                          <span class="shift-req">Req: 22 · Act: 24</span>
+                        </div>
+                        <div class="row-cells">
+                          <div class="cell"><span class="avatar-chip">AV</span><span class="chip-name">A. Vance</span></div>
+                          <div class="cell"><span class="avatar-chip">SJ</span><span class="chip-name">S. Jenkins</span></div>
+                          <div class="cell"><span class="avatar-chip">MC</span><span class="chip-name">M. Chen</span></div>
+                          <div class="cell"><span class="avatar-chip">ER</span><span class="chip-name">E. Rostova</span></div>
+                          <div class="cell"><span class="avatar-chip">AV</span><span class="chip-name">A. Vance</span></div>
+                          <div class="cell"><span class="avatar-chip">SJ</span><span class="chip-name">S. Jenkins</span></div>
+                          <div class="cell weekend"><span class="avatar-chip">MC</span><span class="chip-name">M. Chen</span></div>
+                        </div>
+                      </div>
+
+                      <!-- Afternoon Shift Row -->
+                      <div class="grid-shift-row afternoon-row" data-shift-type="afternoon">
+                        <div class="row-label">
+                          <span class="shift-badge afternoon">Afternoon (15:00 – 23:30)</span>
+                          <span class="shift-req">Req: 28 · Act: 28</span>
+                        </div>
+                        <div class="row-cells">
+                          <div class="cell"><span class="avatar-chip">DR</span><span class="chip-name">D. Ross</span></div>
+                          <div class="cell"><span class="avatar-chip">MP</span><span class="chip-name">M. Patel</span></div>
+                          <div class="cell"><span class="avatar-chip">KL</span><span class="chip-name">K. Lewis</span></div>
+                          <div class="cell"><span class="avatar-chip">PS</span><span class="chip-name">P. Sharma</span></div>
+                          <div class="cell"><span class="avatar-chip">DR</span><span class="chip-name">D. Ross</span></div>
+                          <div class="cell"><span class="avatar-chip">MP</span><span class="chip-name">M. Patel</span></div>
+                          <div class="cell weekend"><span class="avatar-chip">KL</span><span class="chip-name">K. Lewis</span></div>
+                        </div>
+                      </div>
+
+                      <!-- Night Shift Row -->
+                      <div class="grid-shift-row night-row" data-shift-type="night">
+                        <div class="row-label">
+                          <span class="shift-badge night">Night (23:00 – 07:30)</span>
+                          <span class="shift-req">Req: 10 · Act: 12</span>
+                        </div>
+                        <div class="row-cells">
+                          <div class="cell"><span class="avatar-chip">VM</span><span class="chip-name">V. Malhotra</span></div>
+                          <div class="cell"><span class="avatar-chip">CD</span><span class="chip-name">C. Diaz</span></div>
+                          <div class="cell"><span class="avatar-chip">VM</span><span class="chip-name">V. Malhotra</span></div>
+                          <div class="cell"><span class="avatar-chip">CD</span><span class="chip-name">C. Diaz</span></div>
+                          <div class="cell"><span class="avatar-chip">VM</span><span class="chip-name">V. Malhotra</span></div>
+                          <div class="cell"><span class="avatar-chip">CD</span><span class="chip-name">C. Diaz</span></div>
+                          <div class="cell weekend"><span class="avatar-chip">VM</span><span class="chip-name">V. Malhotra</span></div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Shift Preview Bottom Strip -->
+                    <div class="shifts-hero-strip">
+                      <div class="strip-item">
+                        <span class="dot-green"></span>
+                        <span>Coverage: <strong>100% Floor SLA Met</strong></span>
+                      </div>
+                      <div class="strip-item">
+                        <span>Staff: <strong>64 Specialists Active</strong></span>
+                      </div>
+                      <div class="strip-item">
+                        <a href="http://localhost:3000/scheduler" target="_blank" class="strip-link">Open Full Calendar ↗</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ======================================================== -->
+          <!-- 2. PROBLEM SECTION (VISUAL STORYTELLING OF BOTTLENECKS) -->
+          <!-- ======================================================== -->
+          <section class="industry-challenges-section" id="shifts-problems">
+            <div class="section-container">
+              <div class="landing-section-heading">
+                <div>
+                  <div class="landing-kicker"><span></span> OPERATIONAL BOTTLENECKS</div>
+                  <h2>The challenges facing<br><em>workforce operations today.</em></h2>
+                </div>
+                <p>Traditional spreadsheets, fragmented chat groups, and disconnected paper rosters create operational friction. Here is where businesses lose time, staff morale, and customer service quality.</p>
+              </div>
+
+              <div class="challenges-grid">
+                ${ind.challenges.map((c, idx) => `
+                  <div class="challenge-card motion-scroll-trigger">
+                    <div class="challenge-icon-box">
+                      ${window.getIcon(c.icon, 'icon')}
+                      <span class="challenge-num">0${idx + 1}</span>
+                    </div>
+                    <h3>${c.title}</h3>
+                    <p>${c.desc}</p>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </section>
+
+          <!-- ======================================================== -->
+          <!-- 3. FEATURES SECTION (GROUNDED IN SHIFTPLANNER) -->
+          <!-- ======================================================== -->
+          <section class="industry-solutions-section" id="shifts-features">
+            <div class="section-container">
+              <div class="landing-section-heading">
+                <div>
+                  <div class="landing-kicker"><span></span> THE SHIFTS ADVANTAGE</div>
+                  <h2>Engineered specifically for<br><em>modern shift-based operations.</em></h2>
+                </div>
+                <p>Every capability is grounded in our production ShiftPlanner application, providing enterprise power with intuitive simplicity for managers and employees alike.</p>
+              </div>
+
+              <div class="features-grid">
+                ${ind.solutions.map(s => `
+                  <div class="feature-card-detailed motion-scroll-trigger">
+                    <div class="feature-top-meta">
+                      <span class="feature-icon-badge">${window.getIcon(s.icon, 'icon')}</span>
+                      <span class="feature-tier-pill ${s.badge.includes('Trial') ? 'premium-pill' : 'core-pill'}">${s.badge}</span>
+                    </div>
+                    <h3>${s.title}</h3>
+                    <p>${s.desc}</p>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </section>
+
+          <!-- ======================================================== -->
+          <!-- 4. HOW IT WORKS (FOUR-STEP VISUAL WORKFLOW) -->
+          <!-- ======================================================== -->
+          <section class="shifts-workflow-section" id="shifts-workflow">
+            <div class="section-container">
+              <div class="landing-section-heading">
+                <div>
+                  <div class="landing-kicker"><span></span> FOUR-STEP WORKFLOW</div>
+                  <h2>From setup to optimized schedules<br><em>in four simple steps.</em></h2>
+                </div>
+                <p>Streamlined onboarding brings your team from spreadsheet chaos to intelligent workforce synchronization in minutes.</p>
+              </div>
+
+              <div class="shifts-workflow-grid">
+                ${ind.workflow.map((w, idx) => `
+                  <div class="workflow-card motion-scroll-trigger" style="--step-index: ${idx};">
+                    <div class="workflow-step-badge">${w.step}</div>
+                    <div class="workflow-card-body">
+                      <h3>${w.title}</h3>
+                      <p>${w.desc}</p>
+                    </div>
+                    ${idx < ind.workflow.length - 1 ? '<div class="workflow-arrow" aria-hidden="true">→</div>' : ''}
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </section>
+
+          <!-- ======================================================== -->
+          <!-- 5. PRODUCT SHOWCASE (INTERACTIVE MULTI-TAB APP PREVIEW) -->
+          <!-- ======================================================== -->
+          <section class="shifts-showcase-section" id="shifts-showcase">
+            <div class="section-container">
+              <div class="landing-section-heading">
+                <div>
+                  <div class="landing-kicker"><span></span> PRODUCT SHOWCASE</div>
+                  <h2>Inside the ShiftPlanner<br><em>application workspace.</em></h2>
+                </div>
+                <p>Explore realistic previews of the ShiftPlanner interfaces built for Operations Managers and Frontline Employees.</p>
+              </div>
+
+              <div class="showcase-card motion-scroll-trigger">
+                <!-- Multi-view Switcher Tabs -->
+                <div class="showcase-tabs-bar" id="showcase-tabs">
+                  <button class="showcase-tab active" data-tab="manager">
+                    ${window.getIcon('activity', 'icon-xs')}
+                    <span>Manager Dashboard</span>
+                  </button>
+                  <button class="showcase-tab" data-tab="scheduler">
+                    ${window.getIcon('calendar', 'icon-xs')}
+                    <span>Weekly Scheduler</span>
+                  </button>
+                  <button class="showcase-tab" data-tab="employee">
+                    ${window.getIcon('user', 'icon-xs')}
+                    <span>Employee Self-Service</span>
+                  </button>
+                  <button class="showcase-tab" data-tab="conflicts">
+                    ${window.getIcon('shieldCheck', 'icon-xs')}
+                    <span>Conflict Resolution</span>
+                  </button>
+                  <button class="showcase-tab" data-tab="analytics">
+                    ${window.getIcon('barChart', 'icon-xs')}
+                    <span>Workforce Analytics</span>
+                  </button>
+                </div>
+
+                <!-- Showcase Views Container -->
+                <div class="showcase-content-area" id="showcase-content">
+                  <!-- Tab 1: Manager Dashboard Overview (Default) -->
+                  <div class="showcase-view active" id="tab-view-manager">
+                    <div class="showcase-app-top">
+                      <div class="app-window-dots"><span></span><span></span><span></span></div>
+                      <div class="app-window-title">ShiftFlow Operations Manager · Overview & Real-Time Telemetry</div>
+                      <button type="button" class="showcase-external-btn showcase-sso-launch" data-role="MANAGER" data-route="/overview">Launch Live View ↗</button>
+                    </div>
+                    <div class="showcase-app-body">
+                      <div class="mock-manager-overview">
+                        <div class="overview-kpis">
+                          <div class="overview-kpi-card">
+                            <span class="kpi-title">Active Floor Roster</span>
+                            <div class="kpi-num">28 / 28 On Shift</div>
+                            <span class="kpi-sub green">● 100% Floor Attendance</span>
+                          </div>
+                          <div class="overview-kpi-card">
+                            <span class="kpi-title">Next Shift Rotation</span>
+                            <div class="kpi-num">02h 14m</div>
+                            <span class="kpi-sub">Afternoon Shift Starting</span>
+                          </div>
+                          <div class="overview-kpi-card">
+                            <span class="kpi-title">Weekly Budget Variance</span>
+                            <div class="kpi-num">-1.4% Overtime</div>
+                            <span class="kpi-sub green">Optimal Labor Spend</span>
+                          </div>
+                          <div class="overview-kpi-card">
+                            <span class="kpi-title">Pending Shift Swaps</span>
+                            <div class="kpi-num">2 Requests</div>
+                            <span class="kpi-sub teal">Rule Verified & Ready</span>
+                          </div>
+                        </div>
+                        <div class="overview-shift-strip">
+                          <div class="strip-header">Today's Shift Staffing & Tier Allocations</div>
+                          <div class="strip-cards-grid">
+                            <div class="strip-card active">
+                              <span class="strip-badge green">RUNNING</span>
+                              <strong>Morning Shift (07:00 - 15:30)</strong>
+                              <p>24 Staff · 4 Leads, 8 Seniors, 12 Mids</p>
+                            </div>
+                            <div class="strip-card upcoming">
+                              <span class="strip-badge teal">UPCOMING</span>
+                              <strong>Afternoon Shift (15:00 - 23:30)</strong>
+                              <p>28 Staff · Peak Call & Ticket Volume</p>
+                            </div>
+                            <div class="strip-card night">
+                              <span class="strip-badge amber">SCHEDULED</span>
+                              <strong>Night Vigil (23:00 - 07:30)</strong>
+                              <p>12 Staff · Escalations & Incident Care</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Tab 2: Weekly Scheduler -->
+                  <div class="showcase-view" id="tab-view-scheduler">
+                    <div class="showcase-app-top">
+                      <div class="app-window-dots"><span></span><span></span><span></span></div>
+                      <div class="app-window-title">ShiftFlow Operations Manager · Weekly Interactive Scheduler</div>
+                      <button type="button" class="showcase-external-btn showcase-sso-launch" data-role="MANAGER" data-route="/scheduler">Launch Scheduler ↗</button>
+                    </div>
+                    <div class="showcase-app-body">
+                      <div class="mock-scheduler-grid">
+                        <div class="mock-scheduler-header">
+                          <span class="sch-title">Schedule Builder · Contact Center Floor</span>
+                          <div class="sch-actions">
+                            <span class="sch-badge">Week 46 (Published)</span>
+                            <a href="http://localhost:3000/auto-scheduler" target="_blank" class="sch-btn">Auto-Schedule Engine ↗</a>
+                          </div>
+                        </div>
+                        <div class="mock-roster-table">
+                          <div class="roster-head-row">
+                            <span class="emp-col">Employee</span>
+                            <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+                          </div>
+                          <div class="roster-emp-row">
+                            <div class="emp-cell"><span class="avatar-chip">AV</span><div><strong>Alexandra Vance</strong><small>Lead Specialist</small></div></div>
+                            <span class="shift-pill morning">07:00 - 15:30</span>
+                            <span class="shift-pill morning">07:00 - 15:30</span>
+                            <span class="shift-pill morning">07:00 - 15:30</span>
+                            <span class="shift-pill morning">07:00 - 15:30</span>
+                            <span class="shift-pill morning">07:00 - 15:30</span>
+                            <span class="shift-pill off">OFF</span>
+                            <span class="shift-pill off">OFF</span>
+                          </div>
+                          <div class="roster-emp-row">
+                            <div class="emp-cell"><span class="avatar-chip">SJ</span><div><strong>Sarah Jenkins</strong><small>Senior Support</small></div></div>
+                            <span class="shift-pill afternoon">15:00 - 23:30</span>
+                            <span class="shift-pill afternoon">15:00 - 23:30</span>
+                            <span class="shift-pill afternoon">15:00 - 23:30</span>
+                            <span class="shift-pill afternoon">15:00 - 23:30</span>
+                            <span class="shift-pill off">OFF</span>
+                            <span class="shift-pill afternoon">15:00 - 23:30</span>
+                            <span class="shift-pill off">OFF</span>
+                          </div>
+                          <div class="roster-emp-row">
+                            <div class="emp-cell"><span class="avatar-chip">MC</span><div><strong>Marcus Chen</strong><small>Senior Specialist</small></div></div>
+                            <span class="shift-pill morning">07:00 - 15:30</span>
+                            <span class="shift-pill morning">07:00 - 15:30</span>
+                            <span class="shift-pill morning">07:00 - 15:30</span>
+                            <span class="shift-pill off">OFF</span>
+                            <span class="shift-pill morning">07:00 - 15:30</span>
+                            <span class="shift-pill morning">07:00 - 15:30</span>
+                            <span class="shift-pill off">OFF</span>
+                          </div>
+                          <div class="roster-emp-row">
+                            <div class="emp-cell"><span class="avatar-chip">VM</span><div><strong>Vikram Malhotra</strong><small>Night Lead</small></div></div>
+                            <span class="shift-pill night">23:00 - 07:30</span>
+                            <span class="shift-pill night">23:00 - 07:30</span>
+                            <span class="shift-pill night">23:00 - 07:30</span>
+                            <span class="shift-pill night">23:00 - 07:30</span>
+                            <span class="shift-pill off">OFF</span>
+                            <span class="shift-pill off">OFF</span>
+                            <span class="shift-pill night">23:00 - 07:30</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Tab 3: Employee Self-Service -->
+                  <div class="showcase-view" id="tab-view-employee">
+                    <div class="showcase-app-top">
+                      <div class="app-window-dots"><span></span><span></span><span></span></div>
+                      <div class="app-window-title">ShiftFlow Employee Self-Service · Sarah Jenkins (EMP-1001)</div>
+                      <button type="button" class="showcase-external-btn showcase-sso-launch" data-role="EMPLOYEE" data-route="/employee/dashboard">Launch Employee View ↗</button>
+                    </div>
+                    <div class="showcase-app-body">
+                      <div class="mock-employee-portal">
+                        <div class="emp-greeting-banner">
+                          <div>
+                            <h3>Welcome back, Sarah Jenkins</h3>
+                            <p>Senior Support Specialist · Tier 2 Enterprise Escalations</p>
+                          </div>
+                          <div class="emp-shift-countdown">
+                            <small>NEXT SHIFT IN</small>
+                            <strong>02h 45m</strong>
+                            <span>Afternoon Shift (15:00 - 23:30)</span>
+                          </div>
+                        </div>
+                        <div class="emp-quick-grid">
+                          <div class="emp-action-card">
+                            <span class="card-icon teal">${window.getIcon('calendar', 'icon-sm')}</span>
+                            <h4>My Upcoming Schedule</h4>
+                            <p>5 Shifts assigned this week (38.5 hrs). Break allocated at 18:30.</p>
+                            <a href="http://localhost:3000/employee/schedule" target="_blank">View Schedule →</a>
+                          </div>
+                          <div class="emp-action-card">
+                            <span class="card-icon green">${window.getIcon('layers', 'icon-sm')}</span>
+                            <h4>Shift Swap Requests</h4>
+                            <p>Trade shifts with eligible colleagues with automatic rule verification.</p>
+                            <a href="http://localhost:3000/employee/swaps" target="_blank">Manage Swaps →</a>
+                          </div>
+                          <div class="emp-action-card">
+                            <span class="card-icon blue">${window.getIcon('checkCircle', 'icon-sm')}</span>
+                            <h4>Availability Preferences</h4>
+                            <p>Set preferred days and shift rotations for next week's auto-scheduler.</p>
+                            <a href="http://localhost:3000/employee/availability" target="_blank">Set Availability →</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Tab 4: Conflict Resolution Engine -->
+                  <div class="showcase-view" id="tab-view-conflicts">
+                    <div class="showcase-app-top">
+                      <div class="app-window-dots"><span></span><span></span><span></span></div>
+                      <div class="app-window-title">ShiftFlow Operations Manager · Conflict Detection & Auto-Resolution</div>
+                      <button type="button" class="showcase-external-btn showcase-sso-launch" data-role="MANAGER" data-route="/conflicts">Launch Conflict Engine ↗</button>
+                    </div>
+                    <div class="showcase-app-body">
+                      <div class="mock-conflicts-dashboard">
+                        <div class="conflict-summary-bar">
+                          <div class="conflict-stat green">
+                            <strong>0 Active Clashes</strong>
+                            <span>All constraints fully satisfied</span>
+                          </div>
+                          <div class="conflict-stat">
+                            <strong>14 Cleared</strong>
+                            <span>Auto-resolved during generation</span>
+                          </div>
+                          <div class="conflict-stat">
+                            <strong>100% Compliant</strong>
+                            <span>Statutory 11h rest periods verified</span>
+                          </div>
+                        </div>
+                        <div class="conflict-log-list">
+                          <div class="conflict-log-item resolved">
+                            <span class="log-badge green">RESOLVED</span>
+                            <div class="log-info">
+                              <strong>Overtime > 40 hrs Prevented</strong>
+                              <p>Marcus Chen was candidate for extra shift. Engine auto-assigned to part-time specialist Priya Sen.</p>
+                            </div>
+                            <span class="log-time">1.2s via solver</span>
+                          </div>
+                          <div class="conflict-log-item resolved">
+                            <span class="log-badge green">RESOLVED</span>
+                            <div class="log-info">
+                              <strong>Rest Period Protection (&lt; 11h Clash Avoided)</strong>
+                              <p>Elena Rostova Night Shift avoided back-to-back Morning duty. Next shift shifted to Afternoon.</p>
+                            </div>
+                            <span class="log-time">0.8s via solver</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Tab 5: Workforce Analytics -->
+                  <div class="showcase-view" id="tab-view-analytics">
+                    <div class="showcase-app-top">
+                      <div class="app-window-dots"><span></span><span></span><span></span></div>
+                      <div class="app-window-title">ShiftFlow Operations Manager · Workforce Analytics & Payroll Estimation</div>
+                      <button type="button" class="showcase-external-btn showcase-sso-launch" data-role="MANAGER" data-route="/reports">Launch Analytics ↗</button>
+                    </div>
+                    <div class="showcase-app-body">
+                      <div class="mock-analytics-dashboard">
+                        <div class="analytics-metrics-grid">
+                          <div class="metric-box">
+                            <small>ESTIMATED WEEKLY PAYROLL</small>
+                            <strong>₹14,20,000</strong>
+                            <span class="up">Within Budget Cap</span>
+                          </div>
+                          <div class="metric-box">
+                            <small>OVERTIME PREMIUM SHARE</small>
+                            <strong>1.4% (₹42.5k)</strong>
+                            <span class="up">-3.2% vs Manual</span>
+                          </div>
+                          <div class="metric-box">
+                            <small>AVERAGE HOURS / EMPLOYEE</small>
+                            <strong>37.8 hrs/wk</strong>
+                            <span>Safe Labor Limit</span>
+                          </div>
+                          <div class="metric-box">
+                            <small>COST AVOIDANCE GAIN</small>
+                            <strong>₹1,85,000</strong>
+                            <span class="up">Saved via Optimization</span>
+                          </div>
+                        </div>
+                        <div class="analytics-dept-breakdown">
+                          <h4>Department Labor Distribution</h4>
+                          <div class="dept-bar-item">
+                            <div class="dept-label"><span>Technical Support (26 Staff)</span><strong>1,120 hrs (₹5.60 L)</strong></div>
+                            <div class="dept-bar-bg"><div class="dept-bar-fill teal" style="width: 42%;"></div></div>
+                          </div>
+                          <div class="dept-bar-item">
+                            <div class="dept-label"><span>Customer Care (22 Staff)</span><strong>980 hrs (₹4.90 L)</strong></div>
+                            <div class="dept-bar-bg"><div class="dept-bar-fill green" style="width: 34%;"></div></div>
+                          </div>
+                          <div class="dept-bar-item">
+                            <div class="dept-label"><span>Enterprise Escalations (16 Staff)</span><strong>740 hrs (₹3.70 L)</strong></div>
+                            <div class="dept-bar-bg"><div class="dept-bar-fill blue" style="width: 24%;"></div></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ======================================================== -->
+          <!-- 6. BUSINESS BENEFITS (QUANTIFIED VALUE) -->
+          <!-- ======================================================== -->
+          <section class="industry-benefits-section" id="shifts-benefits">
+            <div class="section-container">
+              <div class="landing-section-heading">
+                <div>
+                  <div class="landing-kicker"><span></span> MEASURABLE IMPACT</div>
+                  <h2>Proven operational speed and<br><em>measurable team efficiency.</em></h2>
+                </div>
+                <p>Designed to deliver immediate scheduling relief and compounding operational clarity from day one.</p>
+              </div>
+
+              <div class="benefits-grid">
+                ${ind.benefits.map(b => `
+                  <div class="benefit-card motion-scroll-trigger">
+                    <div class="benefit-number teal-text">${b.num}</div>
+                    <div class="benefit-label">${b.label}</div>
+                    <p class="benefit-description">${b.desc}</p>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </section>
+
+          <!-- ======================================================== -->
+          <!-- 7. 15-DAY FREE TRIAL SECTION (INSIGROW TRIAL ARCHITECTURE) -->
+          <!-- ======================================================== -->
+          <section class="industry-reg-section shifts-reg-section" id="shifts-trial-band">
+            <div class="industry-reg-container">
+              <div class="reg-band-content">
+                <div class="landing-kicker">
+                  <span></span> 15-DAY COMPLIMENTARY TRIAL FOR SHIFTS
+                </div>
+                <h2>Ready to bring your workforce into perfect alignment?</h2>
+                <p class="reg-band-lead">
+                  Activate your 15-day complimentary trial with automated roster generation, intelligent conflict detection, and direct access to ShiftPlanner.
+                </p>
+                
+                <div class="reg-action-wrapper">
+                  <a href="#/register?industry=shifts" class="reg-primary-btn shifts-primary-btn">
+                    <span>Start Your 15-Day Free Trial</span>
+                    <span class="btn-arrow">→</span>
+                  </a>
+                  <div class="reg-trust-notes">
+                    <span>✓ 15 Days Free · No Credit Card Required</span>
+                    <span>✓ Immediate Workspace Access</span>
+                    <span>✓ Pre-selected Solution: SHIFTS</span>
+                  </div>
+                </div>
+
+                <!-- Instant Trial Access Box -->
+                <div class="demo-access-banner">
+                  <span class="demo-access-tag">ENTERPRISE TRIAL ACCESS</span>
+                  <div class="demo-accounts-row">
+                    <div class="demo-account-item">
+                      <strong>Operations Manager Workspace:</strong>
+                      <span>Automated Roster Generator, 11h Rest Protection & Labor Telemetry</span>
+                      <a href="#/register?industry=shifts" class="demo-link">Get Manager Access ↗</a>
+                    </div>
+                    <div class="demo-account-item">
+                      <strong>Frontline Employee Portal:</strong>
+                      <span>Personal Shift Calendars, Mobile Availability & Peer Shift Swaps</span>
+                      <a href="#/register?industry=shifts" class="demo-link">Get Employee Access ↗</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="reg-band-sidecard">
+                <div class="sidecard-inner">
+                  <span class="sidecard-tag">TRIAL ENTITLEMENTS</span>
+                  <h3>Included for 15 Days</h3>
+                  <ul>
+                    <li><span class="ind-trust-check">✓</span> Full SHIFTS module suite & scheduler</li>
+                    <li><span class="ind-trust-check">✓</span> Constraint-based auto-roster generator</li>
+                    <li><span class="ind-trust-check">✓</span> Real-time conflict detection & resolution</li>
+                    <li><span class="ind-trust-check">✓</span> Peer-to-peer shift trade exchange</li>
+                    <li><span class="ind-trust-check">✓</span> Erlang-C staffing demand planning</li>
+                    <li><span class="ind-trust-check">✓</span> Dedicated onboarding & ShiftPlanner connection</li>
+                  </ul>
+                  <div class="sidecard-divider"></div>
+                  <div class="sidecard-footer">
+                    <small>Pre-selected Solution: <strong>SHIFTS</strong></small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ======================================================== -->
+          <!-- 8. FAQ SECTION (REAL FUNCTIONALITY QUESTIONS & ANSWERS) -->
+          <!-- ======================================================== -->
+          <section class="shifts-faq-section" id="shifts-faq">
+            <div class="section-container">
+              <div class="landing-section-heading">
+                <div>
+                  <div class="landing-kicker"><span></span> FREQUENTLY ASKED QUESTIONS</div>
+                  <h2>Everything you need to know<br><em>about SHIFTS.</em></h2>
+                </div>
+                <p>Clear, direct answers regarding scheduling logic, manager and employee functionality, and trial onboarding.</p>
+              </div>
+
+              <div class="shifts-faq-list" id="shifts-faq-accordion">
+                <div class="faq-item active">
+                  <button class="faq-question">
+                    <span>What is SHIFTS and how does it integrate with Insigrow?</span>
+                    <span class="faq-chevron">↓</span>
+                  </button>
+                  <div class="faq-answer">
+                    <p>SHIFTS is Insigrow's fifth business solution, engineered specifically for workforce management and shift planning. It connects directly with our ShiftPlanner engine, allowing your enterprise to manage weekly rosters, eliminate scheduling conflicts, automate break staggering, and provide employee self-service all through your Insigrow account.</p>
+                  </div>
+                </div>
+
+                <div class="faq-item">
+                  <button class="faq-question">
+                    <span>How does the automated constraint-based scheduler work?</span>
+                    <span class="faq-chevron">↓</span>
+                  </button>
+                  <div class="faq-answer">
+                    <p>Our scheduling solver separates Hard Constraints (statutory 40-hour limits, minimum 11-hour rest periods between shifts, approved leaves) from Soft Preferences (seniority, fairness, shift preferences). It computes an optimal 7-day schedule in seconds without manual intervention, avoiding overtime spikes and understaffed queues.</p>
+                  </div>
+                </div>
+
+                <div class="faq-item">
+                  <button class="faq-question">
+                    <span>What are the key capabilities for Managers vs Frontline Employees?</span>
+                    <span class="faq-chevron">↓</span>
+                  </button>
+                  <div class="faq-answer">
+                    <p>Operations Managers have access to weekly drag-and-drop calendars, automated roster generation, employee skill matrices, break staggering policies, conflict resolution alerts, and labor payroll analytics. Frontline Employees have a dedicated self-service portal to view their upcoming shifts, check countdown timers, declare availability preferences, and request mutual shift trades.</p>
+                  </div>
+                </div>
+
+                <div class="faq-item">
+                  <button class="faq-question">
+                    <span>How does peer-to-peer shift swapping work?</span>
+                    <span class="faq-chevron">↓</span>
+                  </button>
+                  <div class="faq-answer">
+                    <p>An employee can propose a shift swap with an eligible colleague directly within their portal. Once the peer agrees, the trade is routed to the manager's review queue where rule validation verifies there are no overtime or rest-period clashes before automatically updating the live roster with an audit trail.</p>
+                  </div>
+                </div>
+
+                <div class="faq-item">
+                  <button class="faq-question">
+                    <span>Can employees submit their own availability and time-off requests?</span>
+                    <span class="faq-chevron">↓</span>
+                  </button>
+                  <div class="faq-answer">
+                    <p>Yes. Employees can declare recurring day-of-week availability, designate preferred shift windows (e.g. Morning vs Afternoon), and submit Paid Time Off (PTO) or sick leave requests. Once approved by a manager, the auto-scheduler automatically blocks out those dates and prevents accidental scheduling.</p>
+                  </div>
+                </div>
+
+                <div class="faq-item">
+                  <button class="faq-question">
+                    <span>What happens during and after the 15-day free trial?</span>
+                    <span class="faq-chevron">↓</span>
+                  </button>
+                  <div class="faq-answer">
+                    <p>During your 15-day complimentary trial, you receive complete access to all Core and Premium features, including automated roster generation, conflict detection, Erlang-C demand planning, and the live ShiftPlanner application. No credit card is required to begin. At the end of 15 days, you can choose a subscription plan that matches your team size, with all your data preserved.</p>
+                  </div>
+                </div>
+
+                <div class="faq-item">
+                  <button class="faq-question">
+                    <span>How do I access the live ShiftPlanner application?</span>
+                    <span class="faq-chevron">↓</span>
+                  </button>
+                  <div class="faq-answer">
+                    <p>Once you register or sign in, you can access ShiftPlanner directly from the SHIFTS solution dashboard via our seamless application launcher, or open it at http://localhost:3000. You can also explore our pre-configured evaluation accounts (Manager: manager@shiftflow.com / Employee: employee@shiftflow.com) at any time.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ======================================================== -->
+          <!-- 9. FINAL CTA (MAKE EVERY SHIFT COUNT) -->
+          <!-- ======================================================== -->
+          <section class="shifts-final-cta-section">
+            <div class="section-container">
+              <div class="shifts-final-cta-card motion-scroll-trigger">
+                <div class="final-cta-kicker"><span></span> ELEVATE YOUR WORKFORCE OPERATIONS</div>
+                <h2>Make Every Shift Count.</h2>
+                <p>Bring your workforce together with smarter scheduling, automated roster generation, and better operational visibility.</p>
+                <div class="final-cta-buttons">
+                  <a href="#/register?industry=shifts" class="ind-btn-primary shifts-primary-btn">
+                    <span>Start Your 15-Day Free Trial</span>
+                    <span class="ind-btn-arrow">→</span>
+                  </a>
+                  <a href="http://localhost:3000" target="_blank" class="ind-btn-outline shifts-app-cta">
+                    <span>Explore Live Application ↗</span>
+                  </a>
+                </div>
+                <div class="final-cta-note">15 Days Free · No Credit Card Required · Instant Setup</div>
+              </div>
+            </div>
+          </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="landing-footer">
+          <a class="landing-brand" href="#/landing">
+            <img src="/insigrow-mark.png" alt="Insigrow Logo" />
+            <span>INSIGROW</span>
+          </a>
+          <span class="footer-center-text">
+            Enterprise solutions, shaped around your business.
+          </span>
+          <div class="footer-powered-wrap">
+            <span>Powered by</span>
+            <img src="/ei8-logo.png" alt="Ei8" class="footer-inline-ei8-img" />
+          </div>
+        </footer>
+      </div>
+    `;
+
+    // 1. Shift Filter event listeners in Hero Calendar preview
+    const filterPills = container.querySelectorAll('#hero-shift-filter .filter-pill');
+    const shiftRows = container.querySelectorAll('#hero-calendar-grid .grid-shift-row');
+    filterPills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        filterPills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        const filterVal = pill.getAttribute('data-filter');
+        shiftRows.forEach(row => {
+          if (filterVal === 'all') {
+            row.style.display = 'flex';
+          } else {
+            const rowType = row.getAttribute('data-shift-type');
+            row.style.display = rowType === filterVal ? 'flex' : 'none';
+          }
+        });
+      });
+    });
+
+    // 2. Showcase Tabs event listeners
+    const showcaseTabs = container.querySelectorAll('#showcase-tabs .showcase-tab');
+    const showcaseViews = container.querySelectorAll('#showcase-content .showcase-view');
+    showcaseTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        showcaseTabs.forEach(t => t.classList.remove('active'));
+        showcaseViews.forEach(v => v.classList.remove('active'));
+        tab.classList.add('active');
+        const tabKey = tab.getAttribute('data-tab');
+        const targetView = container.querySelector('#tab-view-' + tabKey);
+        if (targetView) targetView.classList.add('active');
+      });
+    });
+
+    // 3. FAQ Accordion event listeners
+    const faqItems = container.querySelectorAll('#shifts-faq-accordion .faq-item');
+    faqItems.forEach(item => {
+      const qBtn = item.querySelector('.faq-question');
+      if (qBtn) {
+        qBtn.addEventListener('click', () => {
+          const isOpen = item.classList.contains('active');
+          faqItems.forEach(i => i.classList.remove('active'));
+          if (!isOpen) item.classList.add('active');
+        });
+      }
+    });
+
+    // 4. Smooth scrolling for Explore Features
+    const exploreBtn = container.querySelector('#btn-hero-explore-features');
+    if (exploreBtn) {
+      exploreBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const featSec = container.querySelector('#shifts-features');
+        if (featSec) featSec.scrollIntoView({ behavior: 'smooth' });
+      });
+    }
+
+    // 5. Showcase SSO Launch & Explore CTAs
+    container.querySelectorAll('.showcase-sso-launch, .shifts-app-cta').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        const role = btn.getAttribute('data-role') || 'MANAGER';
+        const route = btn.getAttribute('data-route') || '/overview';
+
+        if (window.appState && window.appState.user) {
+          try {
+            const res = await window.api.getShiftsLaunchToken(role, route);
+            if (res && res.success && res.launchUrl) {
+              window.open(res.launchUrl, '_blank');
+              return;
+            }
+          } catch (_) {}
+        }
+        // If not authenticated, open registration with SHIFTS pre-selected
+        window.location.hash = '#/register?industry=shifts';
+      });
+    });
+
+    // 6. Initialize standard motion handlers
+    if (typeof window.initScrollAnimations === 'function') {
+      window.initScrollAnimations(container);
+    }
+    if (typeof window.initInteractiveCards === 'function') {
+      window.initInteractiveCards(container);
+    }
+    if (window.HeaderView && window.HeaderView.initEvents) {
+      window.HeaderView.initEvents(container);
+    }
   }
 };
 

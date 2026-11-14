@@ -7,6 +7,7 @@ const authRoutes = require('../server/routes/authRoutes');
 const trialRoutes = require('../server/routes/trialRoutes');
 const industryRoutes = require('../server/routes/industryRoutes');
 const { db } = require('../server/db');
+const { generateToken } = require('../server/auth');
 
 function createReqRes(method, path, body = {}, user = null, cookies = {}) {
   const req = {
@@ -169,6 +170,60 @@ async function testRoutes() {
   const b2bTrials = db.getUserTrials(s8.body.user.id);
   assert.strictEqual(b2bTrials.b2b.isTrialActive, true);
   console.log('✓ Industry pre-selection, persistence, and trial auto-activation verified');
+
+  // Test 9: Register with SHIFTS solution and fetch /api/industry/shifts
+  console.log('[Route Test 9] POST /api/auth/register with industry: shifts & GET /api/industry/shifts...');
+  const shiftsEmail = `test_shifts_${Date.now()}@enterprisegrowth.com`;
+  const { req: r9, res: s9 } = createReqRes('POST', '/register', {
+    fullName: 'Elena Rostova',
+    companyName: 'Apex Contact Solutions',
+    email: shiftsEmail,
+    phoneNumber: '+91 98222 33445',
+    password: 'PasswordShifts123',
+    confirmPassword: 'PasswordShifts123',
+    industry: 'shifts'
+  });
+  await runRoute(authRoutes, r9, s9);
+  assert.strictEqual(s9.statusCode, 201);
+  assert.strictEqual(s9.body.success, true);
+  assert.strictEqual(s9.body.user.industry, 'shifts');
+  const shiftsTrials = db.getUserTrials(s9.body.user.id);
+  assert.strictEqual(shiftsTrials.shifts.isTrialActive, true);
+
+  const { req: r10, res: s10 } = createReqRes('GET', '/shifts', {}, s9.body.user);
+  const elenaToken = generateToken(s9.body.user);
+  r10.headers.authorization = `Bearer ${elenaToken}`;
+  r10.user = s9.body.user;
+  r10.params = { industry: 'shifts' };
+  await runRoute(industryRoutes, r10, s10);
+  assert.strictEqual(s10.statusCode, 200);
+  assert.strictEqual(s10.body.data.id, 'shifts');
+  assert.strictEqual(s10.body.data.trialState.isTrialActive, true);
+  const unlockedShiftsFeats = s10.body.data.features.filter(f => f.isTrialFeature);
+  assert.strictEqual(unlockedShiftsFeats[0].isLocked, false);
+  assert.ok(unlockedShiftsFeats[0].premiumData);
+  console.log('✓ SHIFTS solution registration, trial auto-activation, and unlocked features verified');
+
+  // [Route Test 10] POST /shifts/launch-token with role: MANAGER
+  console.log('[Route Test 10] POST /api/industry/shifts/launch-token...');
+  const { req: r11, res: s11 } = createReqRes('POST', '/shifts/launch-token', { role: 'MANAGER' }, s9.body.user);
+  r11.headers.authorization = `Bearer ${elenaToken}`;
+  r11.user = s9.body.user;
+  await runRoute(industryRoutes, r11, s11);
+  assert.strictEqual(s11.statusCode, 200);
+  assert.strictEqual(s11.body.success, true);
+  assert.ok(s11.body.launchToken);
+  assert.ok(s11.body.launchUrl.includes('/sso-launch?token='));
+  assert.strictEqual(s11.body.user.role, 'MANAGER');
+  assert.strictEqual(s11.body.targetRoute, '/overview');
+
+  const jwt = require('jsonwebtoken');
+  const decoded = jwt.verify(s11.body.launchToken, 'shiftflow-wfm-jwt-development-secret-key-32-chars-2026');
+  assert.strictEqual(decoded.type, 'INSIGROW_SSO_LAUNCH');
+  assert.strictEqual(decoded.email, shiftsEmail);
+  assert.strictEqual(decoded.role, 'MANAGER');
+  assert.ok(decoded.nonce);
+  console.log('✓ Secure signed one-time SSO launch token generation verified');
 
   console.log('\n🎉 ALL ROUTE TESTS PASSED WITH 100% ACCURACY! 🎉\n');
 }

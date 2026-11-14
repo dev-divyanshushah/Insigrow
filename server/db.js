@@ -5,6 +5,8 @@ const bcrypt = require('bcryptjs');
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const USERS_FILE = path.join(DATA_DIR, 'users.json');
 const TRIALS_FILE = path.join(DATA_DIR, 'trials.json');
+const INVITATIONS_FILE = path.join(DATA_DIR, 'invitations.json');
+const EMAIL_QUEUE_FILE = path.join(DATA_DIR, 'email_queue.json');
 
 // Ensure data directory exists
 if (!fs.existsSync(DATA_DIR)) {
@@ -41,7 +43,7 @@ function writeJSON(filePath, data) {
   }
 }
 
-const SUPPORTED_INDUSTRIES = ['fmcg', 'ca', 'manufacturing', 'b2b'];
+const SUPPORTED_INDUSTRIES = ['fmcg', 'ca', 'manufacturing', 'b2b', 'shifts'];
 const TRIAL_DURATION_DAYS = 15;
 const TRIAL_DURATION_MS = TRIAL_DURATION_DAYS * 24 * 60 * 60 * 1000;
 
@@ -53,6 +55,8 @@ class Database {
   init() {
     if (!fs.existsSync(USERS_FILE)) writeJSON(USERS_FILE, []);
     if (!fs.existsSync(TRIALS_FILE)) writeJSON(TRIALS_FILE, []);
+    if (!fs.existsSync(INVITATIONS_FILE)) writeJSON(INVITATIONS_FILE, []);
+    if (!fs.existsSync(EMAIL_QUEUE_FILE)) writeJSON(EMAIL_QUEUE_FILE, []);
   }
 
   // User Management
@@ -73,7 +77,7 @@ class Database {
     return users.find(u => u.id === id) || null;
   }
 
-  createUser({ fullName, companyName, email, phoneNumber, password, industry }) {
+  createUser({ fullName, companyName, email, phoneNumber, password, industry, role, onboardingCompleted }) {
     const users = this.getUsers();
     const normalizedEmail = email.trim().toLowerCase();
 
@@ -86,11 +90,13 @@ class Database {
 
     const newUser = {
       id: `usr_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
-      fullName: fullName.trim(),
-      companyName: companyName.trim(),
+      fullName: (fullName || '').trim(),
+      companyName: (companyName || '').trim(),
       email: normalizedEmail,
-      phoneNumber: phoneNumber.trim(),
+      phoneNumber: (phoneNumber || '').trim(),
       industry: industry || 'fmcg',
+      role: (role || 'MANAGER').toUpperCase(),
+      onboardingCompleted: !!onboardingCompleted,
       passwordHash,
       createdAt: new Date().toISOString()
     };
@@ -103,9 +109,142 @@ class Database {
     return safeUser;
   }
 
+  updateUser(id, updates) {
+    const users = this.getUsers();
+    const index = users.findIndex(u => u.id === id);
+    if (index === -1) return null;
+
+    // Do not allow updating id or passwordHash via this method
+    const { id: _id, passwordHash: _pwd, ...allowedUpdates } = updates;
+    users[index] = {
+      ...users[index],
+      ...allowedUpdates,
+      updatedAt: new Date().toISOString()
+    };
+
+    writeJSON(USERS_FILE, users);
+    const { passwordHash: _, ...safeUser } = users[index];
+    return safeUser;
+  }
+
   verifyPassword(user, password) {
     if (!user || !user.passwordHash) return false;
     return bcrypt.compareSync(password, user.passwordHash);
+  }
+
+  // Invitation Management
+  getInvitations() {
+    return readJSON(INVITATIONS_FILE, []);
+  }
+
+  findInvitationByToken(token) {
+    if (!token) return null;
+    const invitations = this.getInvitations();
+    return invitations.find(inv => inv.token === token) || null;
+  }
+
+  findInvitationByEmail(email) {
+    if (!email) return null;
+    const normalized = email.trim().toLowerCase();
+    const invitations = this.getInvitations();
+    return invitations.find(inv => inv.email.toLowerCase() === normalized) || null;
+  }
+
+  getInvitationsByOrganization(orgName) {
+    if (!orgName) return [];
+    const normalized = orgName.trim().toLowerCase();
+    const invitations = this.getInvitations();
+    return invitations.filter(inv => (inv.organizationName || '').trim().toLowerCase() === normalized);
+  }
+
+  createInvitation({ organizationName, invitedBy, email, fullName, role = 'EMPLOYEE', department = 'Operations' }) {
+    const invitations = this.getInvitations();
+    const normalizedEmail = email.trim().toLowerCase();
+
+    // Check if pending invite already exists for this email
+    const existing = invitations.find(
+      inv => inv.email.toLowerCase() === normalizedEmail && inv.status === 'pending'
+    );
+
+    const now = new Date();
+    const expiresAt = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString(); // 7 days validity
+    const crypto = require('crypto');
+    const token = crypto.randomBytes(24).toString('hex');
+
+    if (existing) {
+      // Refresh token and expiry for existing pending invite
+      existing.token = token;
+      existing.fullName = (fullName || existing.fullName).trim();
+      existing.role = (role || existing.role).toUpperCase();
+      existing.department = department || existing.department;
+      existing.organizationName = organizationName || existing.organizationName;
+      existing.invitedBy = invitedBy || existing.invitedBy;
+      existing.expiresAt = expiresAt;
+      existing.updatedAt = now.toISOString();
+      writeJSON(INVITATIONS_FILE, invitations);
+      return existing;
+    }
+
+    const newInvite = {
+      id: `inv_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
+      token,
+      email: normalizedEmail,
+      fullName: (fullName || '').trim(),
+      role: (role || 'EMPLOYEE').toUpperCase(),
+      department: department || 'Operations',
+      organizationName: (organizationName || 'Insigrow Enterprise').trim(),
+      invitedBy: invitedBy || 'Organization Manager',
+      status: 'pending',
+      expiresAt,
+      createdAt: now.toISOString()
+    };
+
+    invitations.push(newInvite);
+    writeJSON(INVITATIONS_FILE, invitations);
+    return newInvite;
+  }
+
+  acceptInvitation(token, userId) {
+    const invitations = this.getInvitations();
+    const index = invitations.findIndex(inv => inv.token === token);
+    if (index === -1) return null;
+
+    invitations[index] = {
+      ...invitations[index],
+      status: 'accepted',
+      acceptedUserId: userId,
+      acceptedAt: new Date().toISOString()
+    };
+
+    writeJSON(INVITATIONS_FILE, invitations);
+    return invitations[index];
+  }
+
+  // Email Queue Management
+  getEmailQueue() {
+    return readJSON(EMAIL_QUEUE_FILE, []);
+  }
+
+  enqueueEmail(emailRecord) {
+    const queue = this.getEmailQueue();
+    const newRecord = {
+      id: `emq_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
+      ...emailRecord,
+      attempts: emailRecord.attempts || 1,
+      createdAt: new Date().toISOString()
+    };
+    queue.push(newRecord);
+    writeJSON(EMAIL_QUEUE_FILE, queue);
+    return newRecord;
+  }
+
+  updateEmailQueueItem(id, updates) {
+    const queue = this.getEmailQueue();
+    const index = queue.findIndex(q => q.id === id);
+    if (index === -1) return null;
+    queue[index] = { ...queue[index], ...updates, updatedAt: new Date().toISOString() };
+    writeJSON(EMAIL_QUEUE_FILE, queue);
+    return queue[index];
   }
 
   // Trial Management

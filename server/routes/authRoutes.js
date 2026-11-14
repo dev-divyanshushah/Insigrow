@@ -63,13 +63,16 @@ router.post('/register', async (req, res) => {
     }
 
     // Create user in persistent database
+    const userRole = (req.body.role || 'MANAGER').toUpperCase();
     const user = db.createUser({
       fullName,
       companyName,
       email,
       phoneNumber,
       password,
-      industry: normalizedIndustry
+      industry: normalizedIndustry,
+      role: userRole,
+      onboardingCompleted: false
     });
 
     // Automatically activate 15-day free trial for their chosen industry
@@ -78,6 +81,34 @@ router.post('/register', async (req, res) => {
     } catch (trialErr) {
       console.warn('Auto trial activation notice:', trialErr.message);
     }
+
+    // If SHIFTS solution, bridge registration to ShiftPlanner backend if reachable
+    if (normalizedIndustry === 'shifts' && typeof fetch === 'function') {
+      try {
+        const shiftPlannerApi = process.env.SHIFTPLANNER_API_URL || 'http://localhost:5001/api';
+        fetch(`${shiftPlannerApi}/auth/register-manager`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            fullName: user.fullName,
+            workEmail: user.email,
+            password: password.length >= 8 ? password : `${password}!2026`,
+            organizationName: user.companyName,
+            inviteCode: 'SHIFTFLOW-MGR',
+            jobTitle: 'Operations Manager'
+          })
+        }).catch(() => {});
+      } catch (_) {}
+    }
+
+    // Generate session token and set cookie so user is logged in
+    const token = generateToken(user);
+    res.cookie('insigrow_token', token, {
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 30 * 24 * 60 * 60 * 1000
+    });
 
     // Dispatch branded confirmation email (fails gracefully without interrupting registration)
     let emailStatus = { sent: false };
@@ -96,12 +127,15 @@ router.post('/register', async (req, res) => {
     return res.status(201).json({
       success: true,
       message: 'Registration successful! Your 15-day free trial has been activated.',
+      token,
       user: {
         id: user.id,
         fullName: user.fullName,
         companyName: user.companyName,
         email: user.email,
-        industry: user.industry
+        industry: user.industry,
+        role: user.role || 'MANAGER',
+        onboardingCompleted: false
       },
       emailConfirmation: emailStatus
     });

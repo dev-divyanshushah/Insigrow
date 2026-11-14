@@ -43,7 +43,7 @@ async function runIntegrationTests() {
   try {
     // 1. Supported Industries Verification
     console.log('[Test 1] Verify supported industries list...');
-    assert.deepStrictEqual(SUPPORTED_INDUSTRIES, ['fmcg', 'ca', 'manufacturing', 'b2b']);
+    assert.deepStrictEqual(SUPPORTED_INDUSTRIES, ['fmcg', 'ca', 'manufacturing', 'b2b', 'shifts']);
     assert.strictEqual(TRIAL_DURATION_DAYS, 15);
     console.log('✓ Supported industries & trial duration (15 days) verified');
 
@@ -103,16 +103,16 @@ async function runIntegrationTests() {
     assert.strictEqual(decoded.companyName, 'Gavaskar Consumer Goods Pvt Ltd');
     console.log('✓ JWT token generation and verification verified');
 
-    // 6. Initial User Trials State (All 4 industries not started)
+    // 6. Initial User Trials State (All 5 industries not started)
     console.log('[Test 6] Initial trials status for new user...');
     const initialTrials = db.getUserTrials(user.id);
-    ['fmcg', 'ca', 'manufacturing', 'b2b'].forEach(ind => {
+    ['fmcg', 'ca', 'manufacturing', 'b2b', 'shifts'].forEach(ind => {
       assert.ok(initialTrials[ind]);
       assert.strictEqual(initialTrials[ind].status, 'not_started');
       assert.strictEqual(initialTrials[ind].isTrialActive, false);
       assert.strictEqual(initialTrials[ind].daysRemaining, 0);
     });
-    console.log('✓ All 4 industry trials properly initialized to "not_started"');
+    console.log('✓ All 5 industry trials properly initialized to "not_started"');
 
     // 7. Independent Trial Activation for FMCG
     console.log('[Test 7] Activating 15-Day Free Trial for FMCG...');
@@ -134,7 +134,7 @@ async function runIntegrationTests() {
     console.log(`✓ FMCG 15-day trial activated! Duration: ${diffDays} days, Expires: ${fmcgTrial.expiresAt}`);
 
     // 8. Verify Trial Independence
-    console.log('[Test 8] Verify other industries remain independent (CA, Manufacturing, B2B)...');
+    console.log('[Test 8] Verify other industries remain independent (CA, Manufacturing, B2B, SHIFTS)...');
     const updatedTrials = db.getUserTrials(user.id);
     assert.strictEqual(updatedTrials.fmcg.isTrialActive, true);
     assert.strictEqual(updatedTrials.ca.isTrialActive, false);
@@ -143,6 +143,8 @@ async function runIntegrationTests() {
     assert.strictEqual(updatedTrials.manufacturing.status, 'not_started');
     assert.strictEqual(updatedTrials.b2b.isTrialActive, false);
     assert.strictEqual(updatedTrials.b2b.status, 'not_started');
+    assert.strictEqual(updatedTrials.shifts.isTrialActive, false);
+    assert.strictEqual(updatedTrials.shifts.status, 'not_started');
     console.log('✓ Complete industry trial independence verified');
 
     // 9. Activate Second Independent Trial (B2B)
@@ -155,6 +157,7 @@ async function runIntegrationTests() {
     assert.strictEqual(multiTrials.b2b.isTrialActive, true);
     assert.strictEqual(multiTrials.ca.isTrialActive, false);
     assert.strictEqual(multiTrials.manufacturing.isTrialActive, false);
+    assert.strictEqual(multiTrials.shifts.isTrialActive, false);
     console.log('✓ User can activate multiple independent industry trials simultaneously');
 
     // 10. Persistence across database reloads
@@ -240,9 +243,10 @@ async function runIntegrationTests() {
     assert.ok(indLandingContent.includes('manufacturing:'), 'Manufacturing landing configuration must exist');
     assert.ok(indLandingContent.includes('b2b:'), 'B2B landing configuration must exist');
     assert.ok(indLandingContent.includes('ca:'), 'Finance (CA) landing configuration must exist');
-    assert.ok(indLandingContent.includes('challenges-section'), 'Industry challenges section must exist');
-    assert.ok(indLandingContent.includes('solutions-section'), 'Insigrow solutions section must exist');
-    assert.ok(indLandingContent.includes('mockup-content'), 'Dashboard/product preview section must exist');
+    assert.ok(indLandingContent.includes('shifts:'), 'SHIFTS landing configuration must exist');
+    assert.ok(indLandingContent.includes('challenges-section') || indLandingContent.includes('shifts-problems'), 'Industry challenges section must exist');
+    assert.ok(indLandingContent.includes('solutions-section') || indLandingContent.includes('shifts-features'), 'Insigrow solutions section must exist');
+    assert.ok(indLandingContent.includes('mockup-content') || indLandingContent.includes('shifts-showcase'), 'Dashboard/product preview section must exist');
     assert.ok(indLandingContent.includes('industry-benefits-section'), 'Benefits section must exist');
     assert.ok(indLandingContent.includes('industry-reg-section'), 'Dedicated registration section must exist');
 
@@ -251,10 +255,27 @@ async function runIntegrationTests() {
     const emailService = require('../server/services/emailService');
     assert.strictEqual(typeof emailService.sendRegistrationEmail, 'function');
     assert.ok(fs.existsSync(path.join(__dirname, '..', '.env.example')), '.env.example must exist');
-    console.log('✓ All 4 dedicated industry landing pages, 6-section structure, and email service verified');
+    console.log('✓ All 5 dedicated industry landing pages, 6-section structure, and email service verified');
+
+    // 15. SHIFTS 15-Day Free Trial Activation & Launchpad Verification
+    console.log('[Test 15] Verify SHIFTS 15-Day Free Trial activation and ShiftPlanner integration...');
+    const shiftsTrial = db.activateTrial(user.id, 'shifts');
+    assert.strictEqual(shiftsTrial.industry, 'shifts');
+    assert.strictEqual(shiftsTrial.isTrialActive, true);
+    assert.strictEqual(shiftsTrial.status, 'active');
+    assert.strictEqual(shiftsTrial.totalDurationDays, 15);
+    const finalTrials = db.getUserTrials(user.id);
+    assert.strictEqual(finalTrials.shifts.isTrialActive, true);
+    assert.strictEqual(finalTrials.shifts.daysRemaining, 14);
+
+    const indViewFile = fs.readFileSync(path.join(__dirname, '..', 'public', 'js', 'views', 'industryView.js'), 'utf8');
+    assert.ok(indViewFile.includes('renderShifts'), 'industryView.js must have renderShifts');
+    assert.ok(indViewFile.includes('shifts-launchpad-section'), 'industryView.js must have shifts-launchpad-section');
+    assert.ok(indViewFile.includes('http://localhost:3000'), 'industryView.js must link to ShiftPlanner on port 3000');
+    console.log('✓ SHIFTS 15-day free trial, launchpad, and ShiftPlanner integration verified');
 
     console.log('====================================================');
-    console.log('✨ ALL 14 INTEGRATION TESTS PASSED WITH 100% SUCCESS ✨');
+    console.log('✨ ALL 15 INTEGRATION TESTS PASSED WITH 100% SUCCESS ✨');
     console.log('====================================================');
   } catch (err) {
     console.error('❌ Integration test failed:', err);

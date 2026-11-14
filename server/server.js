@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const authRoutes = require('./routes/authRoutes');
 const trialRoutes = require('./routes/trialRoutes');
 const industryRoutes = require('./routes/industryRoutes');
+const shiftsRoutes = require('./routes/shiftsRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -28,6 +29,7 @@ app.use(express.static(publicDir));
 app.use('/api/auth', authRoutes);
 app.use('/api/trials', trialRoutes);
 app.use('/api/industry', industryRoutes);
+app.use('/api/shifts', shiftsRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

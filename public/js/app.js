@@ -321,7 +321,8 @@
   }
 
   async function handleRoute() {
-    const hash = window.location.hash || (window.appState.user ? '#/dashboard' : '#/landing');
+    // Default entry point must ALWAYS be public Insigrow landing page, even if authenticated.
+    const hash = window.location.hash || '#/landing';
     const [pathPart, queryPart] = hash.split('?');
     const params = new URLSearchParams(queryPart || '');
 
@@ -330,10 +331,6 @@
 
     // Public product landing page
     if (path === '' || path === 'landing') {
-      if (window.appState.user) {
-        window.location.hash = '#/dashboard';
-        return;
-      }
       window.LandingView.render(root);
       return;
     }
@@ -342,8 +339,65 @@
     if (path.startsWith('solution/') || path.startsWith('solutions/') || (path.startsWith('landing/') && path !== 'landing')) {
       let indKey = (path.split('/')[1] || 'fmcg').toLowerCase().trim();
       if (indKey === 'finance') indKey = 'ca';
-      if (['fmcg', 'ca', 'manufacturing', 'b2b'].includes(indKey)) {
+      if (['fmcg', 'ca', 'manufacturing', 'b2b', 'shifts'].includes(indKey)) {
         window.IndustryLandingView.render(root, indKey);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+    }
+
+    // Dedicated SHIFTS Auth Flow (Manager Registration & Role-based Login)
+    if (path === 'shifts/auth' || path === 'shifts/register' || path === 'shifts/login') {
+      if (window.appState.user) {
+        if (window.appState.user.role === 'EMPLOYEE') {
+          window.location.hash = '#/industry/shifts';
+          return;
+        }
+        if (window.appState.user.onboardingCompleted === false) {
+          window.location.hash = '#/shifts/onboarding';
+          return;
+        }
+        window.location.hash = '#/industry/shifts';
+        return;
+      }
+      const initialTab = (params.get('tab') === 'login' || path === 'shifts/login') ? 'login' : 'register';
+      if (window.ShiftsAuthView) {
+        window.ShiftsAuthView.render(root, initialTab, params.get('email') || '');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+    }
+
+    // Dedicated Employee Invitation Acceptance Flow (Public)
+    if (path === 'shifts/invite') {
+      const inviteToken = params.get('token') || '';
+      if (window.ShiftsInviteView) {
+        window.ShiftsInviteView.render(root, inviteToken);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+    }
+
+    // Dedicated 5-Step Organisation Onboarding Wizard (Protected)
+    if (path === 'shifts/onboarding') {
+      if (!window.appState.user) {
+        // Re-verify session
+        try {
+          const authRes = await window.api.me();
+          if (authRes && authRes.success && authRes.user) {
+            window.appState.setUser(authRes.user);
+            window.appState.setTrials(authRes.trials);
+          } else {
+            window.location.hash = '#/shifts/auth?tab=login';
+            return;
+          }
+        } catch (_) {
+          window.location.hash = '#/shifts/auth?tab=login';
+          return;
+        }
+      }
+      if (window.ShiftsOnboardingView) {
+        window.ShiftsOnboardingView.render(root);
         window.scrollTo({ top: 0, behavior: 'smooth' });
         return;
       }
@@ -357,10 +411,14 @@
       }
       let requestedIndustry = (params.get('industry') || '').toLowerCase().trim();
       if (requestedIndustry === 'finance') requestedIndustry = 'ca';
+      if (requestedIndustry === 'shifts') {
+        window.location.hash = '#/shifts/auth';
+        return;
+      }
       window.AuthView.renderRegister(
         root,
         params.get('email') || '',
-        ['fmcg', 'ca', 'manufacturing', 'b2b'].includes(requestedIndustry) ? requestedIndustry : ''
+        ['fmcg', 'ca', 'manufacturing', 'b2b', 'shifts'].includes(requestedIndustry) ? requestedIndustry : ''
       );
       return;
     }
@@ -392,11 +450,19 @@
       }
     }
 
-    // Determine Industry
+    // Determine Industry (respect user's registered solution, never default to fmcg blindly)
     let targetIndustry = 'fmcg';
+    if (window.appState.user && window.appState.user.industry) {
+      let userInd = window.appState.user.industry.toLowerCase().trim();
+      if (userInd === 'finance') userInd = 'ca';
+      if (['fmcg', 'ca', 'manufacturing', 'b2b', 'shifts'].includes(userInd)) {
+        targetIndustry = userInd;
+      }
+    }
     if (path.startsWith('industry/')) {
-      const ind = path.split('/')[1];
-      if (['fmcg', 'ca', 'manufacturing', 'b2b'].includes(ind)) {
+      let ind = (path.split('/')[1] || '').toLowerCase().trim();
+      if (ind === 'finance') ind = 'ca';
+      if (['fmcg', 'ca', 'manufacturing', 'b2b', 'shifts'].includes(ind)) {
         targetIndustry = ind;
       }
     }

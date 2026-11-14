@@ -34,7 +34,7 @@ const AuthView = {
               </div>
             </div>
             <h1 class="auth-title">Create Business Account</h1>
-            <p class="auth-subtitle">${requestedIndustry ? `Create your account to start your ${requestedIndustry === 'ca' ? 'Finance' : requestedIndustry} 15-day trial.` : 'Register your organization to access Insigrow industry solutions.'}</p>
+            <p class="auth-subtitle">${requestedIndustry ? `Create your account to start your ${requestedIndustry === 'ca' ? 'Finance' : (requestedIndustry === 'shifts' ? 'SHIFTS' : requestedIndustry.toUpperCase())} 15-day trial.` : 'Register your organization to access Insigrow industry solutions.'}</p>
           </div>
 
           <div id="register-alert-container"></div>
@@ -67,6 +67,7 @@ const AuthView = {
                   <option value="manufacturing" ${requestedIndustry === 'manufacturing' ? 'selected' : ''}>Manufacturing – Production & Operations</option>
                   <option value="b2b" ${requestedIndustry === 'b2b' ? 'selected' : ''}>B2B Enterprise – Business Solutions</option>
                   <option value="ca" ${requestedIndustry === 'ca' || requestedIndustry === 'finance' ? 'selected' : ''}>Finance – CA & Advisory</option>
+                  <option value="shifts" ${requestedIndustry === 'shifts' ? 'selected' : ''}>SHIFTS – Workforce & Shift Management</option>
                 </select>
               </div>
               <div class="form-error-text" id="err-industry"></div>
@@ -287,7 +288,7 @@ const AuthView = {
               </div>
             </div>
             <h1 class="auth-title">Sign In to Solutions Portal</h1>
-            <p class="auth-subtitle">Access FMCG, CA, Manufacturing, and B2B Dashboards</p>
+            <p class="auth-subtitle">Access FMCG, Manufacturing, B2B, Finance, and SHIFTS Dashboards</p>
           </div>
 
           <div id="login-alert-container">
@@ -402,8 +403,14 @@ const AuthView = {
       window.appState.setTrials(res.trials);
       window.appState.showToast(`Welcome back, ${res.user.fullName}!`, 'success');
 
-      // Navigate to dashboard
-      window.location.hash = '#/dashboard';
+      // Navigate to user's industry or dashboard
+      let targetInd = (res.user && res.user.industry) ? res.user.industry.toLowerCase().trim() : '';
+      if (targetInd === 'finance') targetInd = 'ca';
+      if (['fmcg', 'ca', 'manufacturing', 'b2b', 'shifts'].includes(targetInd)) {
+        window.location.hash = `#/industry/${targetInd}`;
+      } else {
+        window.location.hash = '#/dashboard';
+      }
     } catch (err) {
       btnSubmit.disabled = false;
       btnSubmit.innerHTML = `<span>Sign In</span>`;

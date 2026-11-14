@@ -8,7 +8,8 @@ const TrialModal = {
     fmcg: { title: 'FMCG & Consumer Goods', scope: 'demand forecasting, stock turnover models, and beat analytics' },
     ca: { title: 'Chartered Accountants & Advisory', scope: 'statutory ROC tracking, audit workpapers, and financial ratio analysis' },
     manufacturing: { title: 'Manufacturing Operations', scope: 'downtime root cause telemetry, yield regression models, and OEE diagnostics' },
-    b2b: { title: 'B2B Enterprise Growth', scope: 'ASC 606 revenue waterfall schedules, deal slippage alerts, and sales quota intelligence' }
+    b2b: { title: 'B2B Enterprise Growth', scope: 'ASC 606 revenue waterfall schedules, deal slippage alerts, and sales quota intelligence' },
+    shifts: { title: 'SHIFTS Workforce & Shift Management', scope: 'constraint-based auto-scheduling, Erlang-C demand planning, conflict auto-resolution, and full ShiftPlanner integration' }
   },
 
   open(industryKey, onActivated) {

@@ -1,7 +1,12 @@
 const express = require('express');
 const router = express.Router();
+const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 const { db, SUPPORTED_INDUSTRIES } = require('../db');
 const { requireAuth } = require('../auth');
+
+const SHIFTS_SSO_SECRET = process.env.SHIFTS_SSO_SECRET || 'shiftflow-wfm-jwt-development-secret-key-32-chars-2026';
+const SHIFTPLANNER_CLIENT_URL = process.env.SHIFTPLANNER_CLIENT_URL || 'http://localhost:3000';
 
 // Industry data definitions with Free and Trial features
 const INDUSTRY_DATA = {
@@ -533,6 +538,193 @@ const INDUSTRY_DATA = {
         }
       }
     ]
+  },
+  shifts: {
+    id: 'shifts',
+    name: 'SHIFTS – Workforce & Shift Management',
+    shortName: 'SHIFTS',
+    tagline: 'Intelligent shift scheduling, seamless employee coordination, and workforce insights',
+    description: 'Designed for modern operations hubs, support teams, and multi-shift enterprises to eliminate scheduling conflicts, automate roster generation, and empower teams with self-service.',
+    stats: [
+      { label: 'Total Employees', value: '64 Active', change: '+12 This Month', trend: 'up' },
+      { label: 'Scheduled Shifts', value: '148 Shifts', change: 'This Week (100% Filled)', trend: 'up' },
+      { label: 'Workforce Coverage', value: '99.4%', change: 'Target > 98.0%', trend: 'up' },
+      { label: 'Scheduling Conflicts', value: '0 Active', change: 'All 14 Resolved', trend: 'up' }
+    ],
+    features: [
+      {
+        id: 'shifts-smart-scheduler',
+        title: 'Smart Shift Scheduling',
+        category: 'Free',
+        isTrialFeature: false,
+        icon: 'calendar',
+        description: 'Interactive weekly shift calendar with Morning, Afternoon, and Night shifts, role assignments, and instant roster publishing.',
+        preview: {
+          shiftsOverview: [
+            { shift: 'Morning Shift (07:00 - 15:30)', scheduled: 24, required: 22, coverage: '109% (Safe)', status: 'Optimal' },
+            { shift: 'Afternoon Shift (15:00 - 23:30)', scheduled: 28, required: 28, coverage: '100% (Balanced)', status: 'Optimal' },
+            { shift: 'Night Shift (23:00 - 07:30)', scheduled: 12, required: 10, coverage: '120% (Safe)', status: 'Optimal' }
+          ]
+        }
+      },
+      {
+        id: 'shifts-employee-management',
+        title: 'Employee Directory & Skill Tiers',
+        category: 'Free',
+        isTrialFeature: false,
+        icon: 'users',
+        description: 'Comprehensive staff profiles with Lead, Senior, Mid, and Junior seniority levels, skill qualifications, and contracted hour limits.',
+        preview: {
+          tiersSummary: [
+            { tier: 'Lead Specialists', count: 8, avgHours: '38.5 hrs/wk', compliance: '100%' },
+            { tier: 'Senior Associates', count: 22, avgHours: '39.0 hrs/wk', compliance: '98.5%' },
+            { tier: 'Mid Specialists', count: 24, avgHours: '37.8 hrs/wk', compliance: '100%' },
+            { tier: 'Junior Trainees', count: 10, avgHours: '32.0 hrs/wk', compliance: '100%' }
+          ]
+        }
+      },
+      {
+        id: 'shifts-templates',
+        title: 'Shift Templates & Staffing Rules',
+        category: 'Free',
+        isTrialFeature: false,
+        icon: 'sliders',
+        description: 'Standardized operational templates for 8-hour, 10-hour, and 12-hour rotations with pre-configured break durations and role requirements.',
+        preview: {
+          templates: [
+            { name: 'Morning Standard', code: 'SHIFT-M01', hours: '8.0 hrs', breakMin: '45 mins', minStaff: 8 },
+            { name: 'Afternoon Peak', code: 'SHIFT-A02', hours: '8.0 hrs', breakMin: '45 mins', minStaff: 12 },
+            { name: 'Night Vigil', code: 'SHIFT-N03', hours: '8.0 hrs', breakMin: '60 mins', minStaff: 6 }
+          ]
+        }
+      },
+      {
+        id: 'shifts-break-management',
+        title: 'Staggered Break Management',
+        category: 'Free',
+        isTrialFeature: false,
+        icon: 'clock',
+        description: 'Automated break staggering algorithms ensuring continuous support coverage while maintaining labor compliance and rest periods.',
+        preview: {
+          breakWindows: [
+            { window: '11:30 - 12:15 Wave 1', onBreak: 6, floorActive: 18, floorCoverage: '75% Active' },
+            { window: '12:15 - 13:00 Wave 2', onBreak: 8, floorActive: 16, floorCoverage: '67% Active' },
+            { window: '13:00 - 13:45 Wave 3', onBreak: 6, floorActive: 18, floorCoverage: '75% Active' }
+          ]
+        }
+      },
+      {
+        id: 'shifts-availability',
+        title: 'Employee Availability & Preferences',
+        category: 'Free',
+        isTrialFeature: false,
+        icon: 'check-circle-2',
+        description: 'Self-service availability submission allowing team members to declare recurring availability, preferred shift windows, and blackout periods.',
+        preview: {
+          availabilityStats: [
+            { day: 'Monday - Friday', submissionRate: '100% Submitted', preferenceMatch: '94.2%' },
+            { day: 'Saturday Weekend', submissionRate: '92% Submitted', preferenceMatch: '89.6%' },
+            { day: 'Sunday Weekend', submissionRate: '88% Submitted', preferenceMatch: '91.0%' }
+          ]
+        }
+      },
+      // TRIAL FEATURES (Ground in ShiftPlanner's real engines)
+      {
+        id: 'shifts-auto-scheduler',
+        title: 'Constraint-Based Automated Roster Generation',
+        category: 'Trial',
+        isTrialFeature: true,
+        icon: 'sparkles',
+        badge: 'Trial Feature',
+        description: 'Algorithmic constraint satisfaction solver generating complete 7-day rosters in seconds while respecting statutory limits, fairness, and skill requirements.',
+        premiumData: {
+          engineStatus: 'Optimal Solution Found',
+          generationTime: '1.24 seconds for 64 employees',
+          constraintsSatisfied: [
+            { constraint: 'Hard Statutory Hours Cap (<= 40 hrs/wk)', status: '100% Satisfied' },
+            { constraint: 'Minimum 11-Hour Rest Period Between Shifts', status: '100% Satisfied' },
+            { constraint: 'Employee Leave & Approved Absence Honoring', status: '100% Satisfied' },
+            { constraint: 'Weekend Shift Fairness & Seniority Balancing', status: '96.8% Balanced' }
+          ],
+          efficiencyGain: 'Saved 9.5 hours of manual managerial roster planning this week'
+        }
+      },
+      {
+        id: 'shifts-demand-forecast',
+        title: 'Erlang-C Staffing Demand Planning & Coverage',
+        category: 'Trial',
+        isTrialFeature: true,
+        icon: 'trending-up',
+        badge: 'Trial Feature',
+        description: 'Mathematical Erlang-C model correlating inbound ticket and call arrival curves to required hourly headcount, preventing understaffed queues.',
+        premiumData: {
+          projectedWeeklyVolume: '14,250 Inbound Interactions',
+          peakInterval: '14:00 - 16:30 IST (185 contacts/hr)',
+          erlangCoverageScore: '99.2% Target SLA Met (< 30s Wait Time)',
+          hourlyMatch: [
+            { time: '08:00', required: 14, scheduled: 16, diff: '+2 Buffer' },
+            { time: '12:00', required: 26, scheduled: 28, diff: '+2 Buffer' },
+            { time: '15:00', required: 32, scheduled: 32, diff: 'Exact Match' },
+            { time: '20:00', required: 20, scheduled: 21, diff: '+1 Buffer' }
+          ]
+        }
+      },
+      {
+        id: 'shifts-conflicts',
+        title: 'Real-time Conflict Detection & 1-Click Auto-Resolution',
+        category: 'Trial',
+        isTrialFeature: true,
+        icon: 'shield-check',
+        badge: 'Trial Feature',
+        description: 'Continuous validation engine flagging double-bookings, overtime limit violations, rest-period clashes, and skill mismatches with single-click resolution.',
+        premiumData: {
+          activeConflictCount: 0,
+          resolvedThisWeek: 14,
+          conflictCategories: [
+            { type: 'Overtime (> 40h)', detected: 6, resolved: 'Auto-reassigned to part-time specialists' },
+            { type: 'Double Booking / Shift Overlap', detected: 3, resolved: 'Shift truncated to eliminate clash' },
+            { type: 'Inadequate Rest (< 11h)', detected: 5, resolved: 'Substituted with next-day afternoon shift' }
+          ]
+        }
+      },
+      {
+        id: 'shifts-swaps',
+        title: 'Mutual Shift Trading & Peer Swapping Governance',
+        category: 'Trial',
+        isTrialFeature: true,
+        icon: 'layers',
+        badge: 'Trial Feature',
+        description: 'Peer-to-peer shift trade exchange allowing qualified employees to swap shifts with supervisor review, audit logging, and automated roster updates.',
+        premiumData: {
+          activeSwapRequests: 2,
+          completedThisMonth: 18,
+          averageApprovalTime: '18 minutes',
+          recentTrades: [
+            { requester: 'Sarah Jenkins (Morning)', peer: 'Marcus Chen (Afternoon)', day: 'Wednesday 12 Nov', status: 'Approved' },
+            { requester: 'David Ross (Night)', peer: 'Elena Rostova (Morning)', day: 'Friday 14 Nov', status: 'Pending Review' }
+          ]
+        }
+      },
+      {
+        id: 'shifts-analytics',
+        title: 'Workforce Analytics & Labor Cost Forecasting',
+        category: 'Trial',
+        isTrialFeature: true,
+        icon: 'bar-chart-2',
+        badge: 'Trial Feature',
+        description: 'Executive reporting on total scheduled labor costs, overtime premium burn, department coverage ratios, and attendance punctuality.',
+        premiumData: {
+          estimatedWeeklyPayroll: '₹14,20,000',
+          overtimeLaborCost: '₹42,500 (1.4% of total payroll - Optimal)',
+          costAvoidanceThroughOptimization: '₹1,85,000 saved vs manual overtime allocation',
+          departmentDistribution: [
+            { dept: 'Technical Support', hours: '1,120 hrs', cost: '₹5.60 L', headCount: 26 },
+            { dept: 'Customer Care', hours: '980 hrs', cost: '₹4.90 L', headCount: 22 },
+            { dept: 'Enterprise Escalations', hours: '740 hrs', cost: '₹3.70 L', headCount: 16 }
+          ]
+        }
+      }
+    ]
   }
 };
 
@@ -610,6 +802,77 @@ router.get('/', requireAuth, (req, res) => {
   });
 
   res.json({ success: true, industries: list });
+});
+
+/**
+ * POST /api/industry/shifts/launch-token
+ * Secure Single-Sign-On: Generates a short-lived (60s), signed, one-time launch token
+ * for authenticated Insigrow users to launch directly into ShiftPlanner with their genuine identity.
+ */
+router.post('/shifts/launch-token', requireAuth, (req, res) => {
+  try {
+    const userTrials = db.getUserTrials(req.user.id);
+    let shiftsTrial = userTrials['shifts'];
+
+    // Auto-activate trial if not started yet
+    if (!shiftsTrial || shiftsTrial.status === 'not_started') {
+      shiftsTrial = db.activateTrial(req.user.id, 'shifts');
+    }
+
+    if (shiftsTrial.status === 'expired') {
+      return res.status(403).json({
+        success: false,
+        message: 'Your 15-day free trial for SHIFTS has expired. Please upgrade your subscription to access ShiftPlanner.'
+      });
+    }
+
+    let validRole;
+    if (req.user.role === 'EMPLOYEE') {
+      validRole = 'EMPLOYEE'; // Prevent employee privilege escalation
+    } else {
+      const requestedRole = (req.body.role || 'MANAGER').toUpperCase();
+      validRole = requestedRole === 'EMPLOYEE' ? 'EMPLOYEE' : 'MANAGER';
+    }
+    const targetRoute = req.body.targetRoute || (validRole === 'EMPLOYEE' ? '/employee/dashboard' : '/overview');
+
+    const nonce = crypto.randomBytes(16).toString('hex');
+    const tokenPayload = {
+      type: 'INSIGROW_SSO_LAUNCH',
+      insigrowUserId: req.user.id,
+      email: req.user.email,
+      name: req.user.fullName,
+      organizationName: req.user.companyName || 'Apex Contact Solutions',
+      role: validRole,
+      targetRoute: targetRoute,
+      nonce: nonce
+    };
+
+    const launchToken = jwt.sign(tokenPayload, SHIFTS_SSO_SECRET, {
+      expiresIn: '60s' // Strictly short-lived: 60 seconds
+    });
+
+    const launchUrl = `${SHIFTPLANNER_CLIENT_URL}/sso-launch?token=${encodeURIComponent(launchToken)}`;
+
+    return res.json({
+      success: true,
+      launchToken,
+      launchUrl,
+      targetRoute,
+      user: {
+        id: req.user.id,
+        email: req.user.email,
+        name: req.user.fullName,
+        role: validRole,
+        organization: req.user.companyName || 'Apex Contact Solutions'
+      }
+    });
+  } catch (err) {
+    console.error('SSO launch token error:', err);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to generate ShiftPlanner launch token.'
+    });
+  }
 });
 
 module.exports = router;

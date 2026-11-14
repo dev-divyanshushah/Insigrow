@@ -38,6 +38,13 @@ const IndustryView = {
       return;
     }
 
+    // Route SHIFTS to dedicated workforce layout with ShiftPlanner launchpad
+    if (id === 'shifts') {
+      const user = window.appState && window.appState.user ? window.appState.user : null;
+      this.renderShifts(container, industryData, trialState, user);
+      return;
+    }
+
     // Standard Layout for CA, Manufacturing, and B2B
     const freeFeatures = features.filter(f => !f.isTrialFeature);
     const trialFeatures = features.filter(f => f.isTrialFeature);
@@ -991,6 +998,395 @@ const IndustryView = {
         </div>
       </div>
     `;
+  },
+
+  /**
+   * Dedicated SHIFTS Enterprise Layout with ShiftPlanner Application Launchpad
+   */
+  renderShifts(container, industryData, trialState, user) {
+    const { id, name, tagline, description, stats } = industryData;
+    const isTrialActive = trialState ? trialState.isTrialActive : false;
+    const trialStatus = trialState ? trialState.status : 'not_started';
+    const defaultShiftPlannerUrl = 'http://localhost:3000';
+
+    const currentUser = user || (window.appState && window.appState.user) || {
+      fullName: 'Operations Manager',
+      companyName: 'Apex Contact Solutions',
+      email: 'manager@enterprisegrowth.com',
+      role: 'MANAGER',
+      onboardingCompleted: false
+    };
+
+    const initials = currentUser.fullName
+      ? currentUser.fullName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()
+      : 'OM';
+
+    const now = Date.now();
+    const expiresTime = trialState && trialState.expiresAt ? new Date(trialState.expiresAt).getTime() : 0;
+    const msLeft = Math.max(0, expiresTime - now);
+    const daysRemaining = trialState && trialState.daysRemaining !== undefined
+      ? trialState.daysRemaining
+      : Math.ceil(msLeft / (1000 * 60 * 60 * 24));
+    const expiresFormatted = trialState && trialState.expiresAt
+      ? this.formatDate(trialState.expiresAt)
+      : '15 Days from Activation';
+
+    const isOnboardingComplete = Boolean(currentUser.onboardingCompleted);
+
+    // 6 Specialized Quick Access Modules
+    const modules = [
+      {
+        id: 'scheduler',
+        title: 'Weekly Scheduler',
+        route: '/scheduler',
+        icon: 'calendar',
+        desc: 'Build, view, and publish weekly shift rosters with live coverage tracking.'
+      },
+      {
+        id: 'auto-scheduler',
+        title: 'Automated Scheduling',
+        route: '/auto-scheduler',
+        icon: 'cpu',
+        desc: 'Mathematical constraint solver generating fair, conflict-free schedules in seconds.'
+      },
+      {
+        id: 'breaks',
+        title: 'Break Management',
+        route: '/breaks',
+        icon: 'clock',
+        desc: 'Intelligent break staggering to prevent understaffing during peak demand windows.'
+      },
+      {
+        id: 'conflicts',
+        title: 'Conflict Detection',
+        route: '/conflicts',
+        icon: 'alertTriangle',
+        desc: 'Real-time violation alerts for overtime, mandatory rest periods, and skill gaps.'
+      },
+      {
+        id: 'reports',
+        title: 'Workforce Analytics',
+        route: '/reports',
+        icon: 'barChart',
+        desc: 'Comprehensive labor cost, coverage rate, and shift utilization reports.'
+      },
+      {
+        id: 'overview',
+        title: 'Demand Forecasting',
+        route: '/overview',
+        icon: 'trendingUp',
+        desc: 'Align shift staffing requirements with historical and predicted customer demand.'
+      }
+    ];
+
+    container.innerHTML = `
+      <div class="shifts-dashboard-layout">
+        <!-- SECTION A: SHIFTS Header / Hero -->
+        <section class="shifts-hero-compact">
+          <div class="shifts-hero-meta-row">
+            <span class="shifts-eyebrow">SHIFTS · WORKFORCE & SHIFT MANAGEMENT</span>
+            <span class="shifts-trial-pill ${isTrialActive ? 'active' : 'inactive'}">
+              <span class="pulse-dot ${isTrialActive ? 'active' : ''}"></span>
+              ${isTrialActive ? `15-Day Trial Active • ${daysRemaining} Days Left` : '15-Day Free Evaluation Available'}
+            </span>
+          </div>
+
+          <div class="shifts-hero-title-group">
+            <h1 class="shifts-hero-headline">Every Shift. Every Team. Perfectly Aligned.</h1>
+            <p class="shifts-hero-desc">
+              Intelligent shift scheduling, seamless employee coordination, and mathematical roster optimization for modern multi-shift organizations.
+            </p>
+          </div>
+        </section>
+
+        <!-- SECTION B: Compact Trial Status Card (No Duplicates) -->
+        <section class="shifts-trial-status-card" aria-label="15-Day Free Evaluation Status">
+          <div class="trial-card-header">
+            <div class="trial-card-title-group">
+              <span class="trial-shield-icon">🛡️</span>
+              <div>
+                <h3 class="trial-card-title">15-Day Free Evaluation Status</h3>
+                <p class="trial-card-sub">Full access to ShiftPlanner optimization solver and manager controls</p>
+              </div>
+            </div>
+            <div class="trial-status-action">
+              ${isTrialActive ? `
+                <span class="trial-active-badge">✓ ACTIVE</span>
+              ` : `
+                <button type="button" class="btn-start-trial shifts-activate-trial-btn">Start 15-Day Trial</button>
+              `}
+            </div>
+          </div>
+
+          <div class="trial-metrics-grid">
+            <div class="trial-metric-item">
+              <span class="trial-metric-label">Access Tier</span>
+              <strong class="trial-metric-val">Enterprise Manager</strong>
+            </div>
+            <div class="trial-metric-item">
+              <span class="trial-metric-label">Remaining Duration</span>
+              <strong class="trial-metric-val ${isTrialActive ? 'highlight' : ''}">${isTrialActive ? `${daysRemaining} Days` : '15 Days (Ready)'}</strong>
+            </div>
+            <div class="trial-metric-item">
+              <span class="trial-metric-label">Evaluation Expiry</span>
+              <strong class="trial-metric-val">${isTrialActive ? expiresFormatted : 'Starts upon activation'}</strong>
+            </div>
+            <div class="trial-metric-item">
+              <span class="trial-metric-label">Assigned Organisation</span>
+              <strong class="trial-metric-val truncate" title="${currentUser.companyName}">${currentUser.companyName || 'Apex Contact Solutions'}</strong>
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION C: Workforce Overview (4 KPI Cards) -->
+        <section class="shifts-kpi-section" aria-label="Workforce Overview">
+          <div class="shifts-section-header">
+            <div>
+              <h3 class="shifts-section-title">Workforce Overview</h3>
+              <p class="shifts-section-sub">Live telemetry and operational metrics from ShiftPlanner</p>
+            </div>
+          </div>
+          <div class="shifts-kpi-grid">
+            ${stats.map((s, idx) => `
+              <div class="shifts-kpi-card" style="--kpi-idx: ${idx};">
+                <div class="kpi-top-row">
+                  <span class="shifts-kpi-label">${s.label}</span>
+                  <span class="shifts-kpi-badge ${s.trend || 'up'}">${s.change}</span>
+                </div>
+                <div class="shifts-kpi-value">${s.value}</div>
+              </div>
+            `).join('')}
+          </div>
+        </section>
+
+        <!-- SECTION D: Manager Workspace -->
+        <section class="shifts-manager-workspace-card shifts-launchpad-section" aria-label="Manager Workspace">
+          <div class="workspace-header-content">
+            <div class="workspace-badge-kicker">PRIMARY APPLICATION ACCESS</div>
+            <h2 class="workspace-title">Your Workforce Workspace</h2>
+            <p class="workspace-description">
+              Launch into the full ShiftPlanner web application to create weekly rosters, execute constraint-based automated scheduling, review break staggering, and publish rosters for frontline employees via secure Single-Sign-On.
+            </p>
+          </div>
+
+          <div class="workspace-actions-row">
+            <button type="button" id="btn-shifts-launch-manager" class="workspace-primary-launch-btn shifts-launch-primary-btn" title="Open Operations Manager Dashboard in ShiftPlanner">
+              <span class="btn-launch-icon">🚀</span>
+              <div class="btn-launch-text">
+                <strong class="launch-main-title">Open Manager Dashboard ↗</strong>
+                <span class="launch-sub-title">Enter Manager Workspace ↗ via cryptographic Single-Sign-On</span>
+              </div>
+            </button>
+
+            <div class="workspace-secondary-actions">
+              <a href="#/shifts/onboarding?step=1" class="workspace-secondary-btn mgmt-action-link" title="Organisation Setup">
+                <span class="sec-icon">⚙️</span>
+                <span>Organisation Setup</span>
+                <span class="visually-hidden" style="display:none;">Onboarding & Department Setup</span>
+              </a>
+              <a href="#/shifts/onboarding?step=4" class="workspace-secondary-btn mgmt-action-link" title="Manage Employees">
+                <span class="sec-icon">👥</span>
+                <span>Manage Employees</span>
+              </a>
+              <a href="#/shifts/onboarding?step=4" class="workspace-secondary-btn mgmt-action-link secondary" title="Invite Employees">
+                <span class="sec-icon">✉️</span>
+                <span>Invite Employees</span>
+                <span class="visually-hidden" style="display:none;">Invite Frontline Employees</span>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION E: Quick Access Modules (3x2 Grid) -->
+        <section class="shifts-modules-section" aria-label="Quick Access Modules">
+          <div class="shifts-section-header">
+            <div>
+              <h3 class="shifts-section-title">Quick Access Modules</h3>
+              <p class="shifts-section-sub">Direct access to specialized workforce optimization tools in ShiftPlanner</p>
+            </div>
+          </div>
+
+          <div class="shifts-modules-grid">
+            ${modules.map(mod => `
+              <div class="shifts-module-card">
+                <div class="module-card-icon">
+                  ${window.getIcon(mod.icon, 'icon-md')}
+                </div>
+                <div class="module-card-body">
+                  <h4 class="module-card-title">${mod.title}</h4>
+                  <p class="module-card-desc">${mod.desc}</p>
+                </div>
+                <button type="button" class="module-launch-link" data-route="${mod.route}" title="Open ${mod.title} in ShiftPlanner">
+                  <span>Open Module</span>
+                  <span class="module-arrow">↗</span>
+                </button>
+              </div>
+            `).join('')}
+          </div>
+        </section>
+
+        <!-- SECTION F: Onboarding Guide -->
+        <section class="shifts-onboarding-guide-card" aria-label="Onboarding Guide">
+          <div class="onboarding-guide-header">
+            <div class="guide-title-block">
+              <span class="guide-icon">📋</span>
+              <div>
+                <h3 class="guide-title">Workforce Onboarding Checklist</h3>
+                <p class="guide-sub">Complete these four steps to activate full automated scheduling for your team</p>
+              </div>
+            </div>
+            <div class="guide-progress-block">
+              <span class="guide-progress-badge ${isOnboardingComplete ? 'complete' : 'pending'}">
+                ${isOnboardingComplete ? '✓ Setup Complete (100%)' : 'In Progress (Step 1 of 4)'}
+              </span>
+              <a href="#/shifts/onboarding" class="guide-resume-btn">
+                <span>${isOnboardingComplete ? 'Review Setup' : 'Resume Setup'}</span>
+                <span>→</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="onboarding-progress-bar-container">
+            <div class="onboarding-progress-bar-fill" style="width: ${isOnboardingComplete ? '100%' : '35%'};"></div>
+          </div>
+
+          <div class="onboarding-steps-grid">
+            <div class="onboarding-step-tile ${isOnboardingComplete ? 'done' : 'active'}">
+              <div class="step-badge">${isOnboardingComplete ? '✓' : '1'}</div>
+              <div class="step-text">
+                <h5 class="step-tile-title">Set Up Organisation</h5>
+                <p class="step-tile-desc">Configure company profile, work hours, and departments.</p>
+              </div>
+            </div>
+
+            <div class="onboarding-step-tile ${isOnboardingComplete ? 'done' : ''}">
+              <div class="step-badge">${isOnboardingComplete ? '✓' : '2'}</div>
+              <div class="step-text">
+                <h5 class="step-tile-title">Add Employees</h5>
+                <p class="step-tile-desc">Invite team members, assign roles, and set skill tags.</p>
+              </div>
+            </div>
+
+            <div class="onboarding-step-tile ${isOnboardingComplete ? 'done' : ''}">
+              <div class="step-badge">${isOnboardingComplete ? '✓' : '3'}</div>
+              <div class="step-text">
+                <h5 class="step-tile-title">Configure Shifts</h5>
+                <p class="step-tile-desc">Define shift patterns, operational constraints, and break rules.</p>
+              </div>
+            </div>
+
+            <div class="onboarding-step-tile ${isOnboardingComplete ? 'done' : ''}">
+              <div class="step-badge">${isOnboardingComplete ? '✓' : '4'}</div>
+              <div class="step-text">
+                <h5 class="step-tile-title">Generate Your First Roster</h5>
+                <p class="step-tile-desc">Run the auto-scheduler and publish the schedule to employees.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    `;
+
+    // Bind Event Listeners for SHIFTS Interactive Launchpad
+    this.bindShiftsLaunchpadEvents(container, currentUser, trialState);
+
+    // Bind standard Trial Activation Buttons
+    this.bindEvents(container, id);
+
+    // Trigger scroll-based animations
+    if (window.initScrollAnimations) {
+      window.initScrollAnimations(container);
+    }
+  },
+
+    // Bind Event Listeners for SHIFTS Interactive Launchpad
+    this.bindShiftsLaunchpadEvents(container, currentUser, trialState);
+
+    // Bind standard Trial Activation Buttons
+    this.bindEvents(container, id);
+
+    // Trigger scroll-based animations
+    if (window.initScrollAnimations) {
+      window.initScrollAnimations(container);
+    }
+  },
+
+  /**
+   * Bind event listeners for the SHIFTS application launcher
+   */
+  bindShiftsLaunchpadEvents(container, currentUser, trialState) {
+    const isTrialActive = trialState ? trialState.isTrialActive : false;
+
+    // Helper: Execute SSO Launch
+    const executeLaunch = async (role, targetRoute, triggerBtn) => {
+      const originalHtml = triggerBtn ? triggerBtn.innerHTML : '';
+      if (triggerBtn) {
+        triggerBtn.disabled = true;
+        triggerBtn.innerHTML = `
+          <span class="spinner spinner-dark" style="width: 16px; height: 16px;"></span>
+          <div><strong>Connecting to ShiftPlanner...</strong><small>Generating secure launch token</small></div>
+        `;
+      }
+
+      try {
+        const res = await window.api.getShiftsLaunchToken(role, targetRoute);
+        if (res && res.success && res.launchUrl) {
+          window.appState.showToast(`Launching ${role === 'EMPLOYEE' ? 'Employee Portal' : 'Manager Dashboard'} for ${currentUser.fullName}...`, 'success');
+          // Open in new tab/window
+          window.open(res.launchUrl, '_blank');
+        } else {
+          throw new Error(res.message || 'Failed to obtain launch token.');
+        }
+      } catch (err) {
+        const errorMsg = err.data && err.data.message ? err.data.message : err.message || 'Launch error occurred.';
+        window.appState.showToast(errorMsg, 'error');
+      } finally {
+        if (triggerBtn) {
+          triggerBtn.disabled = false;
+          triggerBtn.innerHTML = originalHtml;
+        }
+      }
+    };
+
+    // 1. Launch Manager Dashboard
+    const btnManager = container.querySelector('#btn-shifts-launch-manager');
+    if (btnManager) {
+      btnManager.addEventListener('click', () => {
+        executeLaunch('MANAGER', '/overview', btnManager);
+      });
+    }
+
+    // 2. Launch Employee Portal
+    const btnEmployee = container.querySelector('#btn-shifts-launch-employee');
+    if (btnEmployee) {
+      btnEmployee.addEventListener('click', () => {
+        executeLaunch('EMPLOYEE', '/employee/dashboard', btnEmployee);
+      });
+    }
+
+    // 3. Module Quicklinks
+    container.querySelectorAll('.module-launch-link').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const route = btn.getAttribute('data-route') || '/scheduler';
+        executeLaunch('MANAGER', route, null);
+      });
+    });
+
+    // 4. Inline Sign Out
+    const btnSignout = container.querySelector('#btn-shifts-inline-signout');
+    if (btnSignout) {
+      btnSignout.addEventListener('click', async () => {
+        try {
+          await window.api.logout();
+          window.appState.setUser(null);
+          window.appState.setTrials({});
+          window.appState.showToast('Signed out of Insigrow.', 'info');
+          window.location.hash = '#/login';
+        } catch (e) {
+          window.location.hash = '#/login';
+        }
+      });
+    }
   },
 
   bindEvents(container, currentIndustryId) {
