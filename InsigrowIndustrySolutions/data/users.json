@@ -1832,5 +1832,115 @@
     "onboardingCompleted": true,
     "passwordHash": "$2b$10$1v.QFO2iaVmZK/WCLMPkQuyDem9Z7Q.eqvQ1B0hso7t.cVdPDJKXi",
     "createdAt": "2026-11-17T13:01:41.001Z"
+  },
+  {
+    "id": "usr_1794921363004_p3cj5cw",
+    "fullName": "Ananya Roy",
+    "companyName": "Roy Logistics Ltd",
+    "email": "test_exec_1794921362911@enterprisegrowth.com",
+    "phoneNumber": "+91 98300 54321",
+    "industry": "fmcg",
+    "role": "MANAGER",
+    "onboardingCompleted": false,
+    "passwordHash": "$2b$10$tT6YvfR8.aG2lybCX5YT4OA9UMOJOXFN3fOBuRFkiIkb7sxmFJ1Ny",
+    "createdAt": "2026-11-17T13:16:03.005Z"
+  },
+  {
+    "id": "usr_1794921363230_5c3volg",
+    "fullName": "Rajesh Kedia",
+    "companyName": "Kedia Global Solutions",
+    "email": "test_b2b_1794921363143@enterprisegrowth.com",
+    "phoneNumber": "+91 98111 22334",
+    "industry": "b2b",
+    "role": "MANAGER",
+    "onboardingCompleted": false,
+    "passwordHash": "$2b$10$io5xKKC6zQyecaf./IEthe.qxcIm1.E7ofTs2tFAad9FQjpW12s5W",
+    "createdAt": "2026-11-17T13:16:03.230Z"
+  },
+  {
+    "id": "usr_1794921363325_1r0n1sq",
+    "fullName": "Elena Rostova",
+    "companyName": "Apex Contact Solutions",
+    "email": "test_shifts_1794921363240@enterprisegrowth.com",
+    "phoneNumber": "+91 98222 33445",
+    "industry": "shifts",
+    "role": "MANAGER",
+    "onboardingCompleted": false,
+    "passwordHash": "$2b$10$B76IEG80HizYluVvnivZouUu2/CyAKhNs76wEXKxp7P2yIMQbJKmO",
+    "createdAt": "2026-11-17T13:16:03.325Z"
+  },
+  {
+    "id": "usr_1794921363729_4ftyf9f",
+    "fullName": "Sunil Gavaskar",
+    "companyName": "Gavaskar Consumer Goods Pvt Ltd",
+    "email": "test_founder_1794921363641@insigrow.com",
+    "phoneNumber": "+91 98200 12345",
+    "industry": "fmcg",
+    "role": "MANAGER",
+    "onboardingCompleted": false,
+    "passwordHash": "$2b$10$sy3CqrrZkXLY71xotaw48eRsPrKQN4BLzUYdkHxrATQw89K3xAdQe",
+    "createdAt": "2026-11-17T13:16:03.730Z"
+  },
+  {
+    "id": "usr_1794921364869_vcut84u",
+    "fullName": "Elena Rostova",
+    "companyName": "Apex Contact Solutions 1794921364776",
+    "email": "owner_1794921364776@apexcontact.com",
+    "phoneNumber": "+91 98765 43210",
+    "industry": "shifts",
+    "role": "MANAGER",
+    "onboardingCompleted": true,
+    "passwordHash": "$2b$10$ygIcBAACL0b35uar/PWE8OMO2HM3akLCeoK78o43KN58Ved0LMHD6",
+    "createdAt": "2026-11-17T13:16:04.869Z",
+    "onboardingConfig": {
+      "completedAt": "2026-11-17T13:16:04.937Z",
+      "organizationProfile": {
+        "name": "Apex Contact Solutions 1794921364776",
+        "timezone": "Asia/Kolkata",
+        "teamSize": "51-200"
+      },
+      "departments": [
+        "Customer Support",
+        "Operations",
+        "Quality Assurance",
+        "Escalations"
+      ],
+      "shiftTemplates": [
+        {
+          "id": "shift-1",
+          "name": "Morning Shift",
+          "start": "07:00",
+          "end": "15:30",
+          "breakMins": 60
+        },
+        {
+          "id": "shift-2",
+          "name": "Afternoon Shift",
+          "start": "15:00",
+          "end": "23:30",
+          "breakMins": 60
+        },
+        {
+          "id": "shift-3",
+          "name": "Night Shift",
+          "start": "23:00",
+          "end": "07:30",
+          "breakMins": 60
+        }
+      ]
+    },
+    "updatedAt": "2026-11-17T13:16:04.939Z"
+  },
+  {
+    "id": "usr_1794921365066_65s8fn9",
+    "fullName": "Marcus Brody",
+    "companyName": "Apex Contact Solutions 1794921364776",
+    "email": "specialist_1794921364776@apexcontact.com",
+    "phoneNumber": "+91 91234 56789",
+    "industry": "shifts",
+    "role": "EMPLOYEE",
+    "onboardingCompleted": true,
+    "passwordHash": "$2b$10$jEW9fxCQEiPCAOn.t/0O2.CCgiM.ak4uSlQDniRr5myGu4Ccj6JVC",
+    "createdAt": "2026-11-17T13:16:05.066Z"
   }
 ]

@@ -118,5 +118,20 @@
     "createdAt": "2026-11-17T13:01:40.891Z",
     "acceptedUserId": "usr_1794920501001_iavz0ye",
     "acceptedAt": "2026-11-17T13:01:41.005Z"
+  },
+  {
+    "id": "inv_1794921364948_1scd7p2",
+    "token": "3a059119d236b4eee8d528ac33daef77a299794a7706df12",
+    "email": "specialist_1794921364776@apexcontact.com",
+    "fullName": "Marcus Brody",
+    "role": "FRONTLINE SPECIALIST",
+    "department": "Customer Support",
+    "organizationName": "Apex Contact Solutions 1794921364776",
+    "invitedBy": "Elena Rostova",
+    "status": "accepted",
+    "expiresAt": "2026-11-24T13:16:04.948Z",
+    "createdAt": "2026-11-17T13:16:04.948Z",
+    "acceptedUserId": "usr_1794921365066_65s8fn9",
+    "acceptedAt": "2026-11-17T13:16:05.070Z"
   }
 ]
