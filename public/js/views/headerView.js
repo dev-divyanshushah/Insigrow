@@ -70,6 +70,31 @@ const SolutionAccessComponent = {
         </a>
       </div>
     `;
+  },
+
+  /**
+   * Renders the standardised TWO primary account-access options side by side for the Hero CTA section:
+   * 1. Start 15-Day Free Trial (Primary teal/emerald button)
+   * 2. Sign In (Secondary button)
+   * Displayed side by side in the primary CTA area of the solution landing page.
+   * @param {string} solutionKey
+   * @param {Object} options
+   */
+  renderHero(solutionKey, options = {}) {
+    const { signInUrl, trialUrl, solutionKey: activeKey } = this.getUrls(solutionKey);
+    const containerClass = options.containerClass || 'ind-hero-cta-group solution-hero-cta-group';
+    
+    return `
+      <div class="${containerClass}" data-solution="${activeKey}">
+        <a href="${trialUrl}" class="ind-btn-primary hero-btn-trial" id="btn-hero-trial-${activeKey}">
+          <span>Start 15-Day Free Trial</span>
+          <span class="ind-btn-arrow">→</span>
+        </a>
+        <a href="${signInUrl}" class="ind-btn-secondary hero-btn-signin" id="btn-hero-signin-${activeKey}">
+          <span>Sign In</span>
+        </a>
+      </div>
+    `;
   }
 };
 

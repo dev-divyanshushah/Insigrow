@@ -155,33 +155,30 @@ function runVerification() {
 
     const elements = extractLinksAndButtons(html);
 
-    // Identify Sign In elements
-    const signInElements = elements.filter(el => {
-      const lower = el.text.toLowerCase();
-      return lower === 'sign in' || lower === 'sign in ↗' || lower.includes('sign in');
-    });
+    // Extract primary CTA area (Hero CTA group)
+    const heroCtaMatch = html.match(/<div class="[^"]*ind-hero-cta-group[^"]*"[^>]*>(.*?)<\/div>/s);
+    assert.ok(heroCtaMatch, `Primary CTA area (.ind-hero-cta-group) must exist on ${sol.name} landing page`);
+    const heroElements = extractLinksAndButtons(heroCtaMatch[1]);
 
-    // Identify Trial elements
-    const trialElements = elements.filter(el => {
-      const lower = el.text.toLowerCase();
-      return lower.includes('start 15-day free trial') || lower.includes('15-day complimentary trial') && el.type === 'a';
-    });
+    const heroTrial = heroElements.filter(el => el.text.toLowerCase().includes('start 15-day free trial'));
+    const heroSignIn = heroElements.filter(el => el.text.toLowerCase() === 'sign in');
 
-    // Exactly ONE Sign In element
+    // Visual requirements: Primary teal trial button + Secondary sign in button side by side
     assert.strictEqual(
-      signInElements.length, 
-      1, 
-      `Expected EXACTLY 1 Sign In option on ${sol.name} landing page, found ${signInElements.length}: ${JSON.stringify(signInElements)}`
+      heroTrial.length,
+      1,
+      `Expected EXACTLY 1 primary Start 15-Day Free Trial action in ${sol.name} hero CTA area, found ${heroTrial.length}`
     );
-    assert.strictEqual(signInElements[0].href, sol.expectedSignIn, `Sign In href must be ${sol.expectedSignIn}`);
+    assert.strictEqual(heroTrial[0].href, sol.expectedTrial, `Hero trial href must match ${sol.expectedTrial}`);
+    assert.ok(heroTrial[0].class.includes('ind-btn-primary'), `Hero trial button must be primary styled (ind-btn-primary)`);
 
-    // Exactly ONE Start 15-Day Free Trial element
     assert.strictEqual(
-      trialElements.length, 
-      1, 
-      `Expected EXACTLY 1 Start 15-Day Free Trial option on ${sol.name} landing page, found ${trialElements.length}: ${JSON.stringify(trialElements)}`
+      heroSignIn.length,
+      1,
+      `Expected EXACTLY 1 secondary Sign In action in ${sol.name} hero CTA area, found ${heroSignIn.length}`
     );
-    assert.strictEqual(trialElements[0].href, sol.expectedTrial, `Trial href must be ${sol.expectedTrial}`);
+    assert.strictEqual(heroSignIn[0].href, sol.expectedSignIn, `Hero sign in href must match ${sol.expectedSignIn}`);
+    assert.ok(heroSignIn[0].class.includes('ind-btn-secondary'), `Hero sign in button must be secondary styled (ind-btn-secondary)`);
 
     // =======================================================================
     // 3. Absence of Competing / Redundant Options

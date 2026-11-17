@@ -757,12 +757,17 @@ const IndustryLandingView = {
                 <h1 class="ind-hero-heading">${ind.heroHeadline}</h1>
                 <p class="ind-hero-description">${ind.heroDescription}</p>
 
-                <div class="ind-hero-cta-group">
-                  <a href="#solutions-section" class="ind-btn-secondary" onclick="document.getElementById('solutions-section').scrollIntoView({behavior:'smooth'}); return false;">
-                    <span>Explore ${ind.shortName} Features</span>
-                    <span class="ind-btn-arrow-down">↓</span>
-                  </a>
-                </div>
+                ${window.SolutionAccessComponent ? window.SolutionAccessComponent.renderHero(ind.id) : `
+                  <div class="ind-hero-cta-group">
+                    <a href="#/register?industry=${ind.id}" class="ind-btn-primary hero-btn-trial" id="btn-hero-trial-${ind.id}">
+                      <span>Start 15-Day Free Trial</span>
+                      <span class="ind-btn-arrow">→</span>
+                    </a>
+                    <a href="#/login?industry=${ind.id}" class="ind-btn-secondary hero-btn-signin" id="btn-hero-signin-${ind.id}">
+                      <span>Sign In</span>
+                    </a>
+                  </div>
+                `}
 
                 <div class="ind-hero-trust-row">
                   <div class="ind-trust-item">
@@ -1335,12 +1340,17 @@ const IndustryLandingView = {
                   Take control of your workforce with intelligent shift scheduling, seamless employee coordination and powerful workforce insights. Everything your team needs to work better, in one place.
                 </p>
 
-                <div class="ind-hero-cta-group">
-                  <a href="#shifts-features" class="ind-btn-secondary" id="btn-hero-explore-features" onclick="document.getElementById('shifts-features').scrollIntoView({behavior:'smooth'}); return false;">
-                    <span>Explore SHIFTS Features</span>
-                    <span class="ind-btn-arrow-down">↓</span>
-                  </a>
-                </div>
+                ${window.SolutionAccessComponent ? window.SolutionAccessComponent.renderHero('shifts') : `
+                  <div class="ind-hero-cta-group">
+                    <a href="#/shifts/auth?tab=register" class="ind-btn-primary shifts-primary-btn hero-btn-trial" id="btn-hero-trial-shifts">
+                      <span>Start 15-Day Free Trial</span>
+                      <span class="ind-btn-arrow">→</span>
+                    </a>
+                    <a href="#/shifts/auth?tab=login" class="ind-btn-secondary hero-btn-signin" id="btn-hero-signin-shifts">
+                      <span>Sign In</span>
+                    </a>
+                  </div>
+                `}
 
                 <div class="ind-hero-trust-row">
                   <div class="ind-trust-item">
@@ -2082,7 +2092,7 @@ const IndustryLandingView = {
                 <p>Bring your workforce together with smarter scheduling, automated roster generation, and better operational visibility.</p>
                 <div class="final-cta-buttons">
                   <a href="#shifts-features" class="ind-btn-secondary" onclick="document.getElementById('shifts-features').scrollIntoView({behavior:'smooth'}); return false;">
-                    <span>Explore All Capabilities</span>
+                    <span>Explore SHIFTS Features</span>
                     <span class="ind-btn-arrow-down">↓</span>
                   </a>
                 </div>
