@@ -412,7 +412,7 @@
       let requestedIndustry = (params.get('industry') || '').toLowerCase().trim();
       if (requestedIndustry === 'finance') requestedIndustry = 'ca';
       if (requestedIndustry === 'shifts') {
-        window.location.hash = '#/shifts/auth';
+        window.location.hash = '#/shifts/auth?tab=register';
         return;
       }
       window.AuthView.renderRegister(
@@ -428,7 +428,18 @@
         window.location.hash = '#/dashboard';
         return;
       }
-      window.AuthView.renderLogin(root, params.get('email') || '');
+      let requestedIndustry = (params.get('industry') || '').toLowerCase().trim();
+      if (requestedIndustry === 'finance') requestedIndustry = 'ca';
+      if (requestedIndustry === 'shifts') {
+        window.location.hash = '#/shifts/auth?tab=login';
+        return;
+      }
+      window.AuthView.renderLogin(
+        root,
+        params.get('email') || '',
+        '',
+        ['fmcg', 'ca', 'manufacturing', 'b2b'].includes(requestedIndustry) ? requestedIndustry : ''
+      );
       return;
     }
 

@@ -1777,6 +1777,19 @@ body {
   border-color: var(--color-teal, #116D7B);
 }
 
+.mockup-action-pill {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-teal, #116D7B);
+  background: #F0F6F7;
+  padding: 6px 14px;
+  border: 1px solid var(--border-subtle, #DDE9EB);
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .mockup-data-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -2481,6 +2494,28 @@ body {
 
 .strip-link:hover {
   text-decoration: underline;
+}
+
+.strip-status-pill {
+  color: #087F8C;
+  font-weight: 600;
+  font-size: 11px;
+  background: #E8F4F5;
+  padding: 3px 8px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.emp-action-pill {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #087F8C;
+  background: #E8F4F5;
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-top: 8px;
 }
 
 .dot-green {

@@ -116,12 +116,12 @@ const AuthView = {
             </div>
 
             <button type="submit" id="btn-submit-register" class="btn-primary auth-submit-btn">
-              <span>Register Account</span>
+              <span>Start 15-Day Free Trial</span>
             </button>
           </form>
 
           <div class="auth-footer-link">
-            Already have an account? <a href="#/login" id="link-to-login">Sign In here</a>
+            Already have an account? <a href="${this.requestedIndustry ? `#/login?industry=${this.requestedIndustry}` : '#/login'}" id="link-to-login">Sign In</a>
           </div>
 
           <div class="auth-powered-by">
@@ -275,7 +275,11 @@ const AuthView = {
   /**
    * Render Login Form
    */
-  renderLogin(container, prefilledEmail = '', successNotice = '') {
+  renderLogin(container, prefilledEmail = '', successNotice = '', requestedIndustry = '') {
+    this.requestedIndustry = requestedIndustry;
+    const industryLabels = { fmcg: 'FMCG', manufacturing: 'Manufacturing', b2b: 'B2B Enterprise', ca: 'Finance', finance: 'Finance', shifts: 'SHIFTS' };
+    const targetLabel = industryLabels[requestedIndustry] || '';
+
     container.innerHTML = `
       <div class="auth-page-wrapper">
         <div class="auth-card">
@@ -288,7 +292,7 @@ const AuthView = {
               </div>
             </div>
             <h1 class="auth-title">Sign In to Solutions Portal</h1>
-            <p class="auth-subtitle">Access FMCG, Manufacturing, B2B, Finance, and SHIFTS Dashboards</p>
+            <p class="auth-subtitle">${targetLabel ? `Sign in to access your ${targetLabel} workspace.` : 'Access FMCG, Manufacturing, B2B, Finance, and SHIFTS Dashboards'}</p>
           </div>
 
           <div id="login-alert-container">
@@ -336,7 +340,7 @@ const AuthView = {
           </form>
 
           <div class="auth-footer-link">
-            Don't have an account yet? <a href="#/register" id="link-to-register">Register your company</a>
+            Don't have an account yet? <a href="${requestedIndustry ? `#/register?industry=${requestedIndustry}` : '#/register'}" id="link-to-register">Start 15-Day Free Trial</a>
           </div>
 
           <div class="auth-powered-by">
@@ -403,8 +407,8 @@ const AuthView = {
       window.appState.setTrials(res.trials);
       window.appState.showToast(`Welcome back, ${res.user.fullName}!`, 'success');
 
-      // Navigate to user's industry or dashboard
-      let targetInd = (res.user && res.user.industry) ? res.user.industry.toLowerCase().trim() : '';
+      // Navigate to requested industry, user's industry or dashboard
+      let targetInd = this.requestedIndustry || ((res.user && res.user.industry) ? res.user.industry.toLowerCase().trim() : '');
       if (targetInd === 'finance') targetInd = 'ca';
       if (['fmcg', 'ca', 'manufacturing', 'b2b', 'shifts'].includes(targetInd)) {
         window.location.hash = `#/industry/${targetInd}`;

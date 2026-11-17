@@ -1,8 +1,79 @@
 /**
- * Insigrow Industry Portal - Universal Enterprise Header Component
+ * Insigrow Industry Portal - Universal Enterprise Header & Solution Access Component
+ * Standardised TWO primary account-access options per solution:
+ * OPTION 1: SIGN IN (secondary action)
+ * OPTION 2: START 15-DAY FREE TRIAL (primary action)
  * Light-themed, elegant SaaS header based on original Insigrow design reference.
- * Supports both public visitor state and authenticated user dropdown.
  */
+
+const SolutionAccessComponent = {
+  /**
+   * Returns solution-specific authentication and trial registration URLs
+   * @param {string} solutionKey - 'fmcg' | 'manufacturing' | 'b2b' | 'ca' | 'finance' | 'shifts' | ''
+   */
+  getUrls(solutionKey) {
+    let key = (solutionKey || '').toLowerCase().trim();
+    if (key === 'finance') key = 'ca';
+
+    if (key === 'shifts') {
+      return {
+        signInUrl: '#/shifts/auth?tab=login',
+        trialUrl: '#/shifts/auth?tab=register',
+        solutionKey: 'shifts',
+        solutionLabel: 'SHIFTS'
+      };
+    }
+
+    if (['fmcg', 'manufacturing', 'b2b', 'ca'].includes(key)) {
+      const labels = {
+        fmcg: 'FMCG',
+        manufacturing: 'Manufacturing',
+        b2b: 'B2B Enterprise',
+        ca: 'Finance'
+      };
+      return {
+        signInUrl: `#/login?industry=${key}`,
+        trialUrl: `#/register?industry=${key}`,
+        solutionKey: key,
+        solutionLabel: labels[key] || key.toUpperCase()
+      };
+    }
+
+    // Default for general/root landing page
+    return {
+      signInUrl: '#/login',
+      trialUrl: '#/register',
+      solutionKey: '',
+      solutionLabel: 'All Solutions'
+    };
+  },
+
+  /**
+   * Renders the standardised TWO primary account-access options:
+   * 1. Sign In (secondary action)
+   * 2. Start 15-Day Free Trial (primary action)
+   * @param {string} solutionKey
+   * @param {Object} options
+   */
+  render(solutionKey, options = {}) {
+    const { signInUrl, trialUrl, solutionKey: activeKey } = this.getUrls(solutionKey);
+    const containerClass = options.containerClass || 'header-actions-group solution-access-group';
+    
+    return `
+      <div class="${containerClass}" data-solution="${activeKey}">
+        <a class="header-login-btn solution-access-btn solution-signin-btn" href="${signInUrl}">
+          <span>Sign In</span>
+        </a>
+        <a class="header-get-started-btn solution-access-btn solution-trial-btn" href="${trialUrl}">
+          <span>Start 15-Day Free Trial</span>
+          <span class="btn-arrow">↗</span>
+        </a>
+      </div>
+    `;
+  }
+};
+
+window.SolutionAccessComponent = SolutionAccessComponent;
 
 const HeaderView = {
   /**
@@ -14,6 +85,7 @@ const HeaderView = {
    */
   render(options = {}) {
     const { activeNav = '', mode = 'public', user = (window.appState && window.appState.user) } = options;
+    const accessUrls = SolutionAccessComponent.getUrls(activeNav);
 
     const initials = user && user.fullName
       ? user.fullName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()
@@ -58,8 +130,8 @@ const HeaderView = {
             `).join('')}
           </nav>
 
-          <!-- Right: Authentication or Elegant User Dropdown -->
-          <div class="header-actions-group">
+          <!-- Right: Standardised Two Access Options (Sign In + Start 15-Day Free Trial) or User Dropdown -->
+          <div class="header-actions-group solution-access-group" data-solution="${activeNav || ''}">
             ${user ? `
               <!-- Authenticated User Menu Dropdown -->
               <div class="header-account-dropdown" id="header-account-dropdown">
@@ -105,10 +177,10 @@ const HeaderView = {
                 </div>
               </div>
             ` : `
-              <!-- Unauthenticated Visitor CTAs -->
-              <a class="header-login-btn" href="#/login">Sign in</a>
-              <a class="header-get-started-btn" href="#/register">
-                <span>Get started</span>
+              <!-- Standardised TWO Solution Access Options: Sign In (secondary) & Start 15-Day Free Trial (primary) -->
+              <a class="header-login-btn solution-access-btn solution-signin-btn" href="${accessUrls.signInUrl}">Sign In</a>
+              <a class="header-get-started-btn solution-access-btn solution-trial-btn" href="${accessUrls.trialUrl}">
+                <span>Start 15-Day Free Trial</span>
                 <span class="btn-arrow">↗</span>
               </a>
             `}
@@ -136,15 +208,8 @@ const HeaderView = {
               </a>
             `).join('')}
           </div>
-          <div class="mobile-drawer-footer">
-            ${user ? `
-              <a href="#/industry/${user.industry || 'shifts'}" class="mobile-btn-primary">My Workspace ↗</a>
-              <button type="button" class="mobile-btn-secondary" id="btn-mobile-signout">Sign Out</button>
-            ` : `
-              <a href="#/login" class="mobile-btn-secondary">Sign in</a>
-              <a href="#/register" class="mobile-btn-primary">Get started ↗</a>
-            `}
-          </div>
+          <!-- Dynamic Mobile Drawer Footer (populated on drawer open to keep static DOM count clean) -->
+          <div class="mobile-drawer-footer" id="mobile-drawer-footer" data-solution="${activeNav || ''}"></div>
         </div>
       </header>
     `;
@@ -178,13 +243,36 @@ const HeaderView = {
       });
     }
 
-    // Toggle mobile drawer
+    // Toggle mobile drawer & inject mobile actions dynamically
     if (hamburgerBtn && mobileDrawer) {
       hamburgerBtn.addEventListener('click', () => {
         const isOpen = mobileDrawer.classList.contains('open');
         mobileDrawer.classList.toggle('open', !isOpen);
         hamburgerBtn.classList.toggle('active', !isOpen);
         hamburgerBtn.setAttribute('aria-expanded', !isOpen ? 'true' : 'false');
+
+        // Dynamically initialize drawer footer if opening
+        if (!isOpen) {
+          const footer = mobileDrawer.querySelector('#mobile-drawer-footer');
+          if (footer && !footer.hasChildNodes()) {
+            const user = window.appState && window.appState.user;
+            const solKey = footer.getAttribute('data-solution') || '';
+            const urls = SolutionAccessComponent.getUrls(solKey);
+            if (user) {
+              footer.innerHTML = `
+                <a href="#/industry/${user.industry || 'shifts'}" class="mobile-btn-primary">My Workspace ↗</a>
+                <button type="button" class="mobile-btn-secondary" id="btn-mobile-signout">Sign Out</button>
+              `;
+            } else {
+              footer.innerHTML = `
+                <a href="${urls.signInUrl}" class="mobile-btn-secondary">Sign In</a>
+                <a href="${urls.trialUrl}" class="mobile-btn-primary">Start 15-Day Free Trial ↗</a>
+              `;
+            }
+            const mobSignout = footer.querySelector('#btn-mobile-signout');
+            if (mobSignout) mobSignout.addEventListener('click', handleSignout);
+          }
+        }
       });
 
       // Close drawer upon clicking any navigation link
@@ -211,9 +299,6 @@ const HeaderView = {
 
     const signoutBtn = container.querySelector('#btn-header-signout-action');
     if (signoutBtn) signoutBtn.addEventListener('click', handleSignout);
-
-    const mobileSignoutBtn = container.querySelector('#btn-mobile-signout');
-    if (mobileSignoutBtn) mobileSignoutBtn.addEventListener('click', handleSignout);
 
     // Account settings modal / info
     const settingsBtn = container.querySelector('#btn-menu-account-settings');

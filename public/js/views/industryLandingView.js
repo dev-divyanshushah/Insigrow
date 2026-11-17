@@ -730,12 +730,14 @@ const IndustryLandingView = {
                 </a>
               `).join('')}
             </nav>
-            <div class="landing-header-actions">
-              <a class="landing-login" href="#/login">Sign in</a>
-              <a class="landing-header-cta" href="#/register?industry=${ind.id}">
-                Start Free Trial <span>↗</span>
-              </a>
-            </div>
+            ${window.SolutionAccessComponent ? window.SolutionAccessComponent.render(ind.id, { containerClass: 'landing-header-actions' }) : `
+              <div class="landing-header-actions">
+                <a class="landing-login" href="#/login?industry=${ind.id}">Sign In</a>
+                <a class="landing-header-cta" href="#/register?industry=${ind.id}">
+                  Start 15-Day Free Trial <span>↗</span>
+                </a>
+              </div>
+            `}
           </header>
         `}
 
@@ -756,15 +758,8 @@ const IndustryLandingView = {
                 <p class="ind-hero-description">${ind.heroDescription}</p>
 
                 <div class="ind-hero-cta-group">
-                  <div style="display: flex; flex-direction: column; gap: 6px;">
-                    <a href="${ind.id === 'shifts' ? '#/shifts/auth' : `#/register?industry=${ind.id}`}" class="ind-btn-primary" id="shifts-hero-primary-cta">
-                      <span>${ind.ctaText}</span>
-                      <span class="ind-btn-arrow">→</span>
-                    </a>
-                    ${ind.ctaSubtext ? `<span style="font-size: 12px; color: var(--text-muted); font-weight: 500;">${ind.ctaSubtext}</span>` : ''}
-                  </div>
                   <a href="#solutions-section" class="ind-btn-secondary" onclick="document.getElementById('solutions-section').scrollIntoView({behavior:'smooth'}); return false;">
-                    <span>Explore Features</span>
+                    <span>Explore ${ind.shortName} Features</span>
                     <span class="ind-btn-arrow-down">↓</span>
                   </a>
                 </div>
@@ -942,9 +937,7 @@ const IndustryLandingView = {
                       <span class="mockup-kicker">${ind.name.toUpperCase()} SOLUTION</span>
                       <h2>${ind.previewMetrics.headline}</h2>
                     </div>
-                    <a href="#/register?industry=${ind.id}" class="mockup-action-btn">
-                      Explore Live Demo ↗
-                    </a>
+                    <span class="mockup-action-pill">Live Interactive Preview</span>
                   </div>
 
                   ${this.renderInteractiveDashboardMockup(ind)}
@@ -991,10 +984,6 @@ const IndustryLandingView = {
                 <p class="reg-band-lead">${ind.regSubtitle}</p>
                 
                 <div class="reg-action-wrapper">
-                  <a href="${ind.id === 'shifts' ? '#/shifts/auth' : `#/register?industry=${ind.id}`}" class="reg-primary-btn">
-                    <span>${ind.id === 'shifts' ? 'Start Your 15-Day Free Trial' : 'Register Your Company'}</span>
-                    <span class="btn-arrow">→</span>
-                  </a>
                   <div class="reg-trust-notes">
                     <span>✓ No credit card required</span>
                     <span>✓ Immediate workspace access</span>
@@ -1316,12 +1305,14 @@ const IndustryLandingView = {
                 </a>
               `).join('')}
             </nav>
-            <div class="landing-header-actions">
-              <a class="landing-login" href="#/shifts/auth?tab=login">Sign in</a>
-              <a class="landing-header-cta" href="#/shifts/auth">
-                Start Free Trial <span>↗</span>
-              </a>
-            </div>
+            ${window.SolutionAccessComponent ? window.SolutionAccessComponent.render('shifts', { containerClass: 'landing-header-actions' }) : `
+              <div class="landing-header-actions">
+                <a class="landing-login" href="#/shifts/auth?tab=login">Sign In</a>
+                <a class="landing-header-cta" href="#/shifts/auth?tab=register">
+                  Start 15-Day Free Trial <span>↗</span>
+                </a>
+              </div>
+            `}
           </header>
         `}
 
@@ -1345,16 +1336,9 @@ const IndustryLandingView = {
                 </p>
 
                 <div class="ind-hero-cta-group">
-                  <a href="#/register?industry=shifts" class="ind-btn-primary shifts-primary-btn">
-                    <span>Get Started</span>
-                    <span class="ind-btn-arrow">→</span>
-                  </a>
-                  <a href="#shifts-features" class="ind-btn-secondary" id="btn-hero-explore-features">
-                    <span>Explore Features</span>
+                  <a href="#shifts-features" class="ind-btn-secondary" id="btn-hero-explore-features" onclick="document.getElementById('shifts-features').scrollIntoView({behavior:'smooth'}); return false;">
+                    <span>Explore SHIFTS Features</span>
                     <span class="ind-btn-arrow-down">↓</span>
-                  </a>
-                  <a href="http://localhost:3000" target="_blank" class="ind-btn-outline shifts-app-cta" title="Launch ShiftPlanner Application">
-                    <span>Open ShiftPlanner ↗</span>
                   </a>
                 </div>
 
@@ -1519,7 +1503,7 @@ const IndustryLandingView = {
                         <span>Staff: <strong>64 Specialists Active</strong></span>
                       </div>
                       <div class="strip-item">
-                        <a href="http://localhost:3000/scheduler" target="_blank" class="strip-link">Open Full Calendar ↗</a>
+                        <span class="strip-status-pill">Full Weekly View</span>
                       </div>
                     </div>
                   </div>
@@ -1720,7 +1704,7 @@ const IndustryLandingView = {
                           <span class="sch-title">Schedule Builder · Contact Center Floor</span>
                           <div class="sch-actions">
                             <span class="sch-badge">Week 46 (Published)</span>
-                            <a href="http://localhost:3000/auto-scheduler" target="_blank" class="sch-btn">Auto-Schedule Engine ↗</a>
+                            <span class="sch-badge">Optimal solver: 0 conflicts</span>
                           </div>
                         </div>
                         <div class="mock-roster-table">
@@ -1798,19 +1782,19 @@ const IndustryLandingView = {
                             <span class="card-icon teal">${window.getIcon('calendar', 'icon-sm')}</span>
                             <h4>My Upcoming Schedule</h4>
                             <p>5 Shifts assigned this week (38.5 hrs). Break allocated at 18:30.</p>
-                            <a href="http://localhost:3000/employee/schedule" target="_blank">View Schedule →</a>
+                            <span class="emp-action-pill">Self-Service Module</span>
                           </div>
                           <div class="emp-action-card">
                             <span class="card-icon green">${window.getIcon('layers', 'icon-sm')}</span>
                             <h4>Shift Swap Requests</h4>
                             <p>Trade shifts with eligible colleagues with automatic rule verification.</p>
-                            <a href="http://localhost:3000/employee/swaps" target="_blank">Manage Swaps →</a>
+                            <span class="emp-action-pill">Self-Service Module</span>
                           </div>
                           <div class="emp-action-card">
                             <span class="card-icon blue">${window.getIcon('checkCircle', 'icon-sm')}</span>
                             <h4>Availability Preferences</h4>
                             <p>Set preferred days and shift rotations for next week's auto-scheduler.</p>
-                            <a href="http://localhost:3000/employee/availability" target="_blank">Set Availability →</a>
+                            <span class="emp-action-pill">Self-Service Module</span>
                           </div>
                         </div>
                       </div>
@@ -1956,10 +1940,6 @@ const IndustryLandingView = {
                 </p>
                 
                 <div class="reg-action-wrapper">
-                  <a href="#/register?industry=shifts" class="reg-primary-btn shifts-primary-btn">
-                    <span>Start Your 15-Day Free Trial</span>
-                    <span class="btn-arrow">→</span>
-                  </a>
                   <div class="reg-trust-notes">
                     <span>✓ 15 Days Free · No Credit Card Required</span>
                     <span>✓ Immediate Workspace Access</span>
@@ -1974,12 +1954,10 @@ const IndustryLandingView = {
                     <div class="demo-account-item">
                       <strong>Operations Manager Workspace:</strong>
                       <span>Automated Roster Generator, 11h Rest Protection & Labor Telemetry</span>
-                      <a href="#/register?industry=shifts" class="demo-link">Get Manager Access ↗</a>
                     </div>
                     <div class="demo-account-item">
                       <strong>Frontline Employee Portal:</strong>
                       <span>Personal Shift Calendars, Mobile Availability & Peer Shift Swaps</span>
-                      <a href="#/register?industry=shifts" class="demo-link">Get Employee Access ↗</a>
                     </div>
                   </div>
                 </div>
@@ -2103,12 +2081,9 @@ const IndustryLandingView = {
                 <h2>Make Every Shift Count.</h2>
                 <p>Bring your workforce together with smarter scheduling, automated roster generation, and better operational visibility.</p>
                 <div class="final-cta-buttons">
-                  <a href="#/register?industry=shifts" class="ind-btn-primary shifts-primary-btn">
-                    <span>Start Your 15-Day Free Trial</span>
-                    <span class="ind-btn-arrow">→</span>
-                  </a>
-                  <a href="http://localhost:3000" target="_blank" class="ind-btn-outline shifts-app-cta">
-                    <span>Explore Live Application ↗</span>
+                  <a href="#shifts-features" class="ind-btn-secondary" onclick="document.getElementById('shifts-features').scrollIntoView({behavior:'smooth'}); return false;">
+                    <span>Explore All Capabilities</span>
+                    <span class="ind-btn-arrow-down">↓</span>
                   </a>
                 </div>
                 <div class="final-cta-note">15 Days Free · No Credit Card Required · Instant Setup</div>
