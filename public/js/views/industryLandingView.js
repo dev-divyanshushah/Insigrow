@@ -1312,7 +1312,7 @@ const IndustryLandingView = {
             </nav>
             ${window.SolutionAccessComponent ? window.SolutionAccessComponent.render('shifts', { containerClass: 'landing-header-actions' }) : `
               <div class="landing-header-actions">
-                <a class="landing-login" href="#/shifts/auth?tab=login">Sign In</a>
+                <a class="landing-login" href="http://localhost:3000/login">Sign In</a>
                 <a class="landing-header-cta" href="#/shifts/auth?tab=register">
                   Start 15-Day Free Trial <span>↗</span>
                 </a>
@@ -1346,7 +1346,7 @@ const IndustryLandingView = {
                       <span>Start 15-Day Free Trial</span>
                       <span class="ind-btn-arrow">→</span>
                     </a>
-                    <a href="#/shifts/auth?tab=login" class="ind-btn-secondary hero-btn-signin" id="btn-hero-signin-shifts">
+                    <a href="http://localhost:3000/login" class="ind-btn-secondary hero-btn-signin" id="btn-hero-signin-shifts">
                       <span>Sign In</span>
                     </a>
                   </div>

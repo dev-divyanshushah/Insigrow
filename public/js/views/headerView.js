@@ -17,7 +17,7 @@ const SolutionAccessComponent = {
 
     if (key === 'shifts') {
       return {
-        signInUrl: '#/shifts/auth?tab=login',
+        signInUrl: 'http://localhost:3000/login',
         trialUrl: '#/shifts/auth?tab=register',
         solutionKey: 'shifts',
         solutionLabel: 'SHIFTS'

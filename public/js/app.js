@@ -346,8 +346,14 @@
       }
     }
 
-    // Dedicated SHIFTS Auth Flow (Manager Registration & Role-based Login)
-    if (path === 'shifts/auth' || path === 'shifts/register' || path === 'shifts/login') {
+    // Dedicated SHIFTS Sign In: Redirect directly to ShiftPlanner login application
+    if (path === 'shifts/login') {
+      window.location.href = 'http://localhost:3000/login';
+      return;
+    }
+
+    // Dedicated SHIFTS Auth Flow (Manager Registration & Onboarding)
+    if (path === 'shifts/auth' || path === 'shifts/register') {
       if (window.appState.user) {
         if (window.appState.user.role === 'EMPLOYEE') {
           window.location.hash = '#/industry/shifts';
@@ -431,7 +437,7 @@
       let requestedIndustry = (params.get('industry') || '').toLowerCase().trim();
       if (requestedIndustry === 'finance') requestedIndustry = 'ca';
       if (requestedIndustry === 'shifts') {
-        window.location.hash = '#/shifts/auth?tab=login';
+        window.location.href = 'http://localhost:3000/login';
         return;
       }
       window.AuthView.renderLogin(

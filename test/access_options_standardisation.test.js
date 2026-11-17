@@ -111,7 +111,7 @@ function runVerification() {
     { key: 'manufacturing', name: 'Manufacturing', expectedSignIn: '#/login?industry=manufacturing', expectedTrial: '#/register?industry=manufacturing' },
     { key: 'b2b', name: 'B2B Enterprise', expectedSignIn: '#/login?industry=b2b', expectedTrial: '#/register?industry=b2b' },
     { key: 'ca', name: 'Finance (CA)', expectedSignIn: '#/login?industry=ca', expectedTrial: '#/register?industry=ca' },
-    { key: 'shifts', name: 'SHIFTS', expectedSignIn: '#/shifts/auth?tab=login', expectedTrial: '#/shifts/auth?tab=register' }
+    { key: 'shifts', name: 'SHIFTS', expectedSignIn: 'http://localhost:3000/login', expectedTrial: '#/shifts/auth?tab=register' }
   ];
 
   // =========================================================================
